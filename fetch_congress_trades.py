@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """
 미국 의회 주식 거래 데이터 수집 스크립트
-- House Stock Watcher S3에서 하원 거래 데이터 fetch
-- Senate Stock Watcher에서 상원 거래 데이터 fetch
-- 정당/위원회 매핑 추가
-- 이해충돌(💎) 판별
+- Financial Modeling Prep (FMP) API 사용 (무료 키)
+- 하원 + 상원 거래 데이터
+- 정당/위원회 매핑 + 이해충돌(💎) 판별
 - JSON 출력
 """
 
@@ -16,36 +15,16 @@ from urllib.request import urlopen, Request
 from urllib.error import URLError, HTTPError
 
 # ═══════════════════════════════════════════════
-# DATA SOURCES
+# FMP API 설정
+# GitHub Secrets에서 FMP_API_KEY를 설정하세요
+# 무료 가입: https://financialmodelingprep.com/developer
 # ═══════════════════════════════════════════════
-HOUSE_URL = "https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/all_transactions.json"
-SENATE_URL = "https://senate-stock-watcher-data.s3-us-west-2.amazonaws.com/aggregate/all_transactions.json"
+FMP_API_KEY = os.environ.get("FMP_API_KEY", "")
+FMP_BASE = "https://financialmodelingprep.com/stable"
 
-# ═══════════════════════════════════════════════
-# PARTY MAPPING (주요 정치인)
-# 실제 운영 시 https://theunitedstates.io/congress-legislators/ 에서
-# 전체 의원 목록을 가져와 매핑하는 것을 권장
-# ═══════════════════════════════════════════════
-PARTY_MAP = {
-    # Democrats
-    "Nancy Pelosi": "D", "Hon. Nancy Pelosi": "D",
-    "Josh Gottheimer": "D", "Ro Khanna": "D",
-    "Daniel Goldman": "D", "Daniel S. Goldman": "D",
-    "Debbie Wasserman Schultz": "D",
-    "Lois Frankel": "D", "Suzan DelBene": "D",
-    "Hakeem Jeffries": "D", "Adam Schiff": "D",
-    "Sheldon Whitehouse": "D", "Mark Kelly": "D",
-    "Gary Peters": "D", "Jon Ossoff": "D",
-    "Mark Warner": "D", "Jacky Rosen": "D",
-    # Republicans
-    "Dan Crenshaw": "R", "Tommy Tuberville": "R",
-    "Mark Green": "R", "Marjorie Taylor Greene": "R",
-    "Michael McCaul": "R", "David Rouzer": "R",
-    "Rick Scott": "R", "Kevin Hern": "R",
-    "French Hill": "R", "John Curtis": "R",
-    "Tim Scott": "R", "Bill Hagerty": "R",
-    "Markwayne Mullin": "R", "Ted Cruz": "R",
-}
+# Endpoints
+HOUSE_URL = f"{FMP_BASE}/house-trading?apikey={FMP_API_KEY}"
+SENATE_URL = f"{FMP_BASE}/senate-trading?apikey={FMP_API_KEY}"
 
 # ═══════════════════════════════════════════════
 # COMMITTEE / JURISDICTION DATA
@@ -153,31 +132,21 @@ POLITICIAN_INFO = {
 # TICKER → SECTOR MAPPING
 # ═══════════════════════════════════════════════
 SECTOR_MAP = {
-    # 반도체
     "NVDA": "반도체", "AMD": "반도체", "AVGO": "반도체", "INTC": "반도체",
     "QCOM": "반도체", "TSM": "반도체", "MRVL": "반도체", "MU": "반도체",
-    # 테크
     "AAPL": "테크", "GOOGL": "테크", "GOOG": "테크", "META": "테크",
     "AMZN": "테크", "NFLX": "테크",
-    # 소프트웨어
     "MSFT": "소프트웨어", "CRM": "소프트웨어", "PLTR": "소프트웨어",
     "SNOW": "소프트웨어", "NOW": "소프트웨어", "ORCL": "소프트웨어",
-    # 방산
     "RTX": "방산", "LMT": "방산", "GD": "방산", "NOC": "방산",
     "BA": "방산", "HII": "방산", "LHX": "방산",
-    # 전기차
     "TSLA": "전기차", "RIVN": "전기차", "LCID": "전기차",
-    # 금융
     "JPM": "금융", "BAC": "금융", "V": "금융", "MA": "금융",
     "GS": "금융", "MS": "금융", "BRK.B": "금융",
-    # 에너지
     "XOM": "에너지", "CVX": "에너지", "COP": "에너지", "SLB": "에너지",
-    # 헬스케어
     "UNH": "헬스케어", "JNJ": "헬스케어", "PFE": "헬스케어",
     "LLY": "헬스케어", "ABBV": "헬스케어", "MRK": "헬스케어",
-    # 광업
     "HL": "광업", "NEM": "광업", "FCX": "광업", "GOLD": "광업",
-    # 미디어
     "DJT": "미디어", "DIS": "미디어", "CMCSA": "미디어",
 }
 
@@ -197,11 +166,14 @@ SECTOR_JURISDICTION_MAP = {
 
 def fetch_json(url, label=""):
     """URL에서 JSON 데이터 가져오기"""
-    print(f"  📥 {label}: {url}")
+    print(f"  📥 {label}...")
     try:
         req = Request(url, headers={"User-Agent": "CongressTracker/1.0"})
         with urlopen(req, timeout=60) as resp:
             data = json.loads(resp.read().decode("utf-8"))
+            if isinstance(data, dict) and "Error Message" in data:
+                print(f"  ❌ {label} API 오류: {data['Error Message']}")
+                return []
             print(f"  ✅ {label}: {len(data)} 건 로드")
             return data
     except (URLError, HTTPError) as e:
@@ -209,29 +181,15 @@ def fetch_json(url, label=""):
         return []
 
 
-def get_party(name):
-    """정치인 이름으로 정당 조회"""
-    if name in PARTY_MAP:
-        return PARTY_MAP[name]
-    # 이름 변형 시도
-    clean = name.replace("Hon. ", "").replace("Rep. ", "").replace("Sen. ", "").strip()
-    if clean in PARTY_MAP:
-        return PARTY_MAP[clean]
-    return None
-
-
 def get_sector(ticker):
-    """티커로 섹터 조회"""
     if not ticker or ticker == "--":
         return None
     return SECTOR_MAP.get(ticker.upper().strip(), "기타")
 
 
 def check_conflict(rep_name, sector):
-    """이해충돌 여부 판별"""
     if not sector or sector == "기타":
         return False
-    # 이름 정규화
     clean = rep_name.replace("Hon. ", "").replace("Rep. ", "").replace("Sen. ", "").strip()
     info = POLITICIAN_INFO.get(clean)
     if not info:
@@ -240,7 +198,6 @@ def check_conflict(rep_name, sector):
 
 
 def get_amount_mid(amount_str):
-    """금액 범위 문자열 → 중간값"""
     amount_map = {
         "$1,001 - $15,000": 8000,
         "$15,001 - $50,000": 32500,
@@ -258,178 +215,148 @@ def get_amount_mid(amount_str):
     return amount_map.get(amount_str.strip(), 0)
 
 
-def process_house_data(raw_data):
-    """하원 데이터 가공"""
+def process_fmp_house(raw_data):
+    """FMP 하원 데이터 가공"""
     trades = []
     for item in raw_data:
-        ticker = item.get("ticker", "").strip()
+        ticker = (item.get("ticker") or item.get("symbol") or "").strip()
         if not ticker or ticker == "--" or ticker == "N/A":
             continue
 
-        rep = item.get("representative", "").strip()
+        rep = (item.get("representative") or "").strip()
         if not rep:
             continue
 
-        tx_type = item.get("type", "").strip().lower()
+        tx_type = (item.get("type") or "").strip().lower()
         is_buy = "purchase" in tx_type
         is_sell = "sale" in tx_type
         if not is_buy and not is_sell:
             continue
 
-        tx_date = item.get("transaction_date", "")
-        if not tx_date or tx_date == "--":
-            tx_date = item.get("disclosure_date", "")
+        tx_date = item.get("transactionDate") or item.get("transaction_date") or ""
+        disc_date = item.get("disclosureDate") or item.get("disclosure_date") or ""
+        party = item.get("party") or item.get("politicalParty") or None
+        # FMP sometimes provides party
+        if party:
+            party = "D" if "democrat" in party.lower() or party == "D" else "R" if "republican" in party.lower() or party == "R" else None
 
-        party = get_party(rep)
         sector = get_sector(ticker)
         conflict = check_conflict(rep, sector)
+        amount = item.get("amount") or ""
 
         trade = {
             "rep": rep,
             "party": party,
             "ticker": ticker.upper(),
-            "asset": item.get("asset_description", "")[:60],
+            "asset": (item.get("assetDescription") or item.get("asset_description") or "")[:60],
             "type": "buy" if is_buy else "sell",
-            "amount": item.get("amount", ""),
-            "amount_mid": get_amount_mid(item.get("amount", "")),
+            "amount": amount,
+            "amount_mid": get_amount_mid(amount),
             "date": tx_date,
-            "disclosure_date": item.get("disclosure_date", ""),
+            "disclosure_date": disc_date,
             "sector": sector,
             "conflict": conflict,
             "chamber": "house",
-            "district": item.get("district", ""),
-            "owner": item.get("owner", ""),
+            "owner": item.get("owner") or "",
         }
         trades.append(trade)
-
     return trades
 
 
-def process_senate_data(raw_data):
-    """상원 데이터 가공"""
+def process_fmp_senate(raw_data):
+    """FMP 상원 데이터 가공"""
     trades = []
     for item in raw_data:
-        ticker = item.get("ticker", "").strip()
+        ticker = (item.get("ticker") or item.get("symbol") or "").strip()
         if not ticker or ticker == "--" or ticker == "N/A":
             continue
 
-        rep = item.get("senator", "").strip()
-        if not rep:
-            rep = item.get("full_name", "").strip()
+        rep = (item.get("senator") or item.get("fullName") or item.get("firstName", "") + " " + item.get("lastName", "")).strip()
         if not rep:
             continue
 
-        tx_type = item.get("type", "").strip().lower()
+        tx_type = (item.get("type") or "").strip().lower()
         is_buy = "purchase" in tx_type
-        is_sell = "sale" in tx_type
+        is_sell = "sale" in tx_type or "exchange" in tx_type
         if not is_buy and not is_sell:
             continue
 
-        tx_date = item.get("transaction_date", "")
-        if not tx_date or tx_date == "--":
-            tx_date = item.get("disclosure_date", "")
+        tx_date = item.get("transactionDate") or item.get("transaction_date") or ""
+        disc_date = item.get("disclosureDate") or item.get("disclosure_date") or ""
+        party = item.get("party") or item.get("politicalParty") or None
+        if party:
+            party = "D" if "democrat" in party.lower() or party == "D" else "R" if "republican" in party.lower() or party == "R" else None
 
-        party = get_party(rep)
         sector = get_sector(ticker)
         conflict = check_conflict(rep, sector)
+        amount = item.get("amount") or ""
 
         trade = {
             "rep": rep,
             "party": party,
             "ticker": ticker.upper(),
-            "asset": item.get("asset_description", "")[:60],
+            "asset": (item.get("assetDescription") or item.get("asset_description") or "")[:60],
             "type": "buy" if is_buy else "sell",
-            "amount": item.get("amount", ""),
-            "amount_mid": get_amount_mid(item.get("amount", "")),
+            "amount": amount,
+            "amount_mid": get_amount_mid(amount),
             "date": tx_date,
-            "disclosure_date": item.get("disclosure_date", ""),
+            "disclosure_date": disc_date,
             "sector": sector,
             "conflict": conflict,
             "chamber": "senate",
-            "district": "",
-            "owner": item.get("owner", ""),
+            "owner": item.get("owner") or "",
         }
         trades.append(trade)
-
     return trades
 
 
 def compute_stats(trades):
-    """통계 데이터 계산"""
-    # 인기 종목
-    stock_map = {}
+    stock_map, sector_map, trader_map = {}, {}, {}
+    ps = {"D": {"buy":0,"sell":0,"buy_vol":0,"sell_vol":0,"conflicts":0},
+          "R": {"buy":0,"sell":0,"buy_vol":0,"sell_vol":0,"conflicts":0}}
+
     for t in trades:
-        if t["type"] != "buy":
-            continue
-        tk = t["ticker"]
-        if tk not in stock_map:
-            stock_map[tk] = {"ticker": tk, "asset": t["asset"], "count": 0, "volume": 0, "traders": set(), "conflicts": 0, "sector": t["sector"]}
-        stock_map[tk]["count"] += 1
-        stock_map[tk]["volume"] += t["amount_mid"]
-        stock_map[tk]["traders"].add(t["rep"])
-        if t["conflict"]:
-            stock_map[tk]["conflicts"] += 1
-
-    popular = sorted(stock_map.values(), key=lambda x: x["count"], reverse=True)[:20]
-    for s in popular:
-        s["traders"] = len(s["traders"])
-
-    # 섹터 분포
-    sector_map = {}
-    for t in trades:
-        if t["type"] != "buy" or not t["sector"]:
-            continue
-        sec = t["sector"]
-        if sec not in sector_map:
-            sector_map[sec] = {"name": sec, "value": 0, "count": 0, "conflicts": 0}
-        sector_map[sec]["value"] += t["amount_mid"]
-        sector_map[sec]["count"] += 1
-        if t["conflict"]:
-            sector_map[sec]["conflicts"] += 1
-
-    sectors = sorted(sector_map.values(), key=lambda x: x["value"], reverse=True)
-
-    # 정당별 통계
-    party_stats = {"D": {"buy": 0, "sell": 0, "buy_vol": 0, "sell_vol": 0, "conflicts": 0},
-                   "R": {"buy": 0, "sell": 0, "buy_vol": 0, "sell_vol": 0, "conflicts": 0}}
-    for t in trades:
-        p = t.get("party")
-        if p not in party_stats:
-            continue
         if t["type"] == "buy":
-            party_stats[p]["buy"] += 1
-            party_stats[p]["buy_vol"] += t["amount_mid"]
-        else:
-            party_stats[p]["sell"] += 1
-            party_stats[p]["sell_vol"] += t["amount_mid"]
-        if t["conflict"]:
-            party_stats[p]["conflicts"] += 1
+            tk = t["ticker"]
+            if tk not in stock_map:
+                stock_map[tk] = {"ticker":tk,"asset":t["asset"],"count":0,"volume":0,"traders":set(),"conflicts":0,"sector":t["sector"]}
+            stock_map[tk]["count"] += 1
+            stock_map[tk]["volume"] += t["amount_mid"]
+            stock_map[tk]["traders"].add(t["rep"])
+            if t["conflict"]: stock_map[tk]["conflicts"] += 1
 
-    # 주요 거래자
-    trader_map = {}
-    for t in trades:
+            sec = t["sector"]
+            if sec:
+                if sec not in sector_map:
+                    sector_map[sec] = {"name":sec,"value":0,"count":0,"conflicts":0}
+                sector_map[sec]["value"] += t["amount_mid"]
+                sector_map[sec]["count"] += 1
+                if t["conflict"]: sector_map[sec]["conflicts"] += 1
+
+        p = t.get("party")
+        if p in ps:
+            if t["type"] == "buy":
+                ps[p]["buy"] += 1; ps[p]["buy_vol"] += t["amount_mid"]
+            else:
+                ps[p]["sell"] += 1; ps[p]["sell_vol"] += t["amount_mid"]
+            if t["conflict"]: ps[p]["conflicts"] += 1
+
         rep = t["rep"]
         if rep not in trader_map:
-            trader_map[rep] = {"name": rep, "party": t["party"], "buys": 0, "sells": 0, "volume": 0, "tickers": set(), "conflicts": 0}
-        if t["type"] == "buy":
-            trader_map[rep]["buys"] += 1
-        else:
-            trader_map[rep]["sells"] += 1
+            trader_map[rep] = {"name":rep,"party":t["party"],"buys":0,"sells":0,"volume":0,"tickers":set(),"conflicts":0}
+        if t["type"] == "buy": trader_map[rep]["buys"] += 1
+        else: trader_map[rep]["sells"] += 1
         trader_map[rep]["volume"] += t["amount_mid"]
         trader_map[rep]["tickers"].add(t["ticker"])
-        if t["conflict"]:
-            trader_map[rep]["conflicts"] += 1
+        if t["conflict"]: trader_map[rep]["conflicts"] += 1
 
-    top_traders = sorted(trader_map.values(), key=lambda x: x["volume"], reverse=True)[:20]
-    for tr in top_traders:
-        tr["tickers"] = len(tr["tickers"])
+    popular = sorted(stock_map.values(), key=lambda x: x["count"], reverse=True)[:20]
+    for s in popular: s["traders"] = len(s["traders"])
+    sectors = sorted(sector_map.values(), key=lambda x: x["value"], reverse=True)
+    top = sorted(trader_map.values(), key=lambda x: x["volume"], reverse=True)[:20]
+    for tr in top: tr["tickers"] = len(tr["tickers"])
 
-    return {
-        "popular_stocks": popular,
-        "sectors": sectors,
-        "party_stats": party_stats,
-        "top_traders": top_traders,
-    }
+    return {"popular_stocks":popular, "sectors":sectors, "party_stats":ps, "top_traders":top}
 
 
 def main():
@@ -437,55 +364,58 @@ def main():
     print(f"  📅 실행 시간: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print()
 
+    if not FMP_API_KEY:
+        print("❌ FMP_API_KEY 환경변수가 설정되지 않았습니다.")
+        print("   GitHub Settings → Secrets → Actions → FMP_API_KEY 추가 필요")
+        print("   무료 가입: https://financialmodelingprep.com/developer")
+        sys.exit(1)
+
     # 1. 데이터 가져오기
-    print("[1/4] 데이터 가져오기...")
-    house_raw = fetch_json(HOUSE_URL, "하원 데이터")
-    senate_raw = fetch_json(SENATE_URL, "상원 데이터")
+    print("[1/4] FMP API에서 데이터 가져오기...")
+    house_raw = fetch_json(HOUSE_URL, "하원 데이터 (FMP)")
+    senate_raw = fetch_json(SENATE_URL, "상원 데이터 (FMP)")
     print()
 
     if not house_raw and not senate_raw:
-        print("❌ 데이터를 가져올 수 없습니다.")
+        print("❌ 데이터를 가져올 수 없습니다. API 키를 확인하세요.")
         sys.exit(1)
 
     # 2. 데이터 가공
     print("[2/4] 데이터 가공 중...")
-    house_trades = process_house_data(house_raw)
-    senate_trades = process_senate_data(senate_raw)
+    house_trades = process_fmp_house(house_raw)
+    senate_trades = process_fmp_senate(senate_raw)
     all_trades = house_trades + senate_trades
 
-    # 최근 1년 데이터만 필터
+    # 최근 1년
     one_year_ago = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
-    recent_trades = [t for t in all_trades if t.get("date", "") >= one_year_ago]
-    recent_trades.sort(key=lambda x: x.get("date", ""), reverse=True)
+    recent = [t for t in all_trades if t.get("date", "") >= one_year_ago]
+    recent.sort(key=lambda x: x.get("date", ""), reverse=True)
 
-    print(f"  ✅ 전체 거래: {len(all_trades)}건")
-    print(f"  ✅ 최근 1년: {len(recent_trades)}건")
-    print(f"  ✅ 이해충돌(💎): {sum(1 for t in recent_trades if t['conflict'])}건")
+    print(f"  ✅ 전체: {len(all_trades)}건 → 최근 1년: {len(recent)}건")
+    print(f"  ✅ 이해충돌(💎): {sum(1 for t in recent if t['conflict'])}건")
     print()
 
-    # 3. 통계 계산
+    # 3. 통계
     print("[3/4] 통계 계산 중...")
-    stats = compute_stats(recent_trades)
+    stats = compute_stats(recent)
     print(f"  ✅ 인기 종목 TOP {len(stats['popular_stocks'])}")
-    print(f"  ✅ 섹터 {len(stats['sectors'])}개")
-    print(f"  ✅ 주요 거래자 TOP {len(stats['top_traders'])}")
     print()
 
     # 4. JSON 출력
     print("[4/4] JSON 저장 중...")
     output = {
         "updated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S KST"),
-        "total_trades": len(recent_trades),
-        "total_buy": sum(1 for t in recent_trades if t["type"] == "buy"),
-        "total_sell": sum(1 for t in recent_trades if t["type"] == "sell"),
-        "total_conflicts": sum(1 for t in recent_trades if t["conflict"]),
-        "trades": recent_trades[:500],  # 최근 500건
+        "total_trades": len(recent),
+        "total_buy": sum(1 for t in recent if t["type"] == "buy"),
+        "total_sell": sum(1 for t in recent if t["type"] == "sell"),
+        "total_conflicts": sum(1 for t in recent if t["conflict"]),
+        "trades": recent[:500],
         "stats": stats,
         "politician_info": POLITICIAN_INFO,
         "sector_jurisdiction": SECTOR_JURISDICTION_MAP,
     }
 
-    output_dir = os.path.join(os.path.dirname(__file__), "data")
+    output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
     os.makedirs(output_dir, exist_ok=True)
     output_path = os.path.join(output_dir, "congress_trades.json")
 
@@ -493,7 +423,7 @@ def main():
         json.dump(output, f, ensure_ascii=False, indent=2)
 
     file_size = os.path.getsize(output_path)
-    print(f"  ✅ 저장 완료: {output_path} ({file_size/1024:.1f}KB)")
+    print(f"  ✅ 저장: {output_path} ({file_size/1024:.1f}KB)")
     print()
     print("🎉 완료!")
 
