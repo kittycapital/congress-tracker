@@ -1,30 +1,1102 @@
 {
-  "updated_at": "2026-02-08 14:45:52 KST",
-  "total_trades": 0,
-  "total_buy": 0,
-  "total_sell": 0,
-  "total_conflicts": 0,
-  "trades": [],
+  "updated_at": "2026-02-08 14:56:20 KST",
+  "total_trades": 48,
+  "total_buy": 41,
+  "total_sell": 7,
+  "total_conflicts": 42,
+  "trades": [
+    {
+      "rep": "Michael McCaul",
+      "party": "R",
+      "ticker": "NVDA",
+      "asset": "NVIDIA Corp",
+      "type": "buy",
+      "amount": "$500,001 - $1,000,000",
+      "amount_mid": 750000,
+      "date": "2026-01-31",
+      "disclosure_date": "2026-03-11",
+      "sector": "반도체",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Tommy Tuberville",
+      "party": "R",
+      "ticker": "NVDA",
+      "asset": "NVIDIA Corp",
+      "type": "buy",
+      "amount": "$250,001 - $500,000",
+      "amount_mid": 375000,
+      "date": "2026-01-18",
+      "disclosure_date": "2026-02-02",
+      "sector": "반도체",
+      "conflict": true,
+      "chamber": "senate",
+      "owner": "Self"
+    },
+    {
+      "rep": "Mark Green",
+      "party": "R",
+      "ticker": "NOC",
+      "asset": "Northrop Grumman",
+      "type": "buy",
+      "amount": "$15,001 - $50,000",
+      "amount_mid": 32500,
+      "date": "2026-01-12",
+      "disclosure_date": "2026-02-19",
+      "sector": "방산",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Debbie Wasserman Schultz",
+      "party": "D",
+      "ticker": "HL",
+      "asset": "Hecla Mining",
+      "type": "buy",
+      "amount": "$1,001 - $15,000",
+      "amount_mid": 8000,
+      "date": "2025-12-30",
+      "disclosure_date": "2026-01-15",
+      "sector": "광업",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Daniel Goldman",
+      "party": "D",
+      "ticker": "META",
+      "asset": "Meta Platforms",
+      "type": "sell",
+      "amount": "$50,001 - $100,000",
+      "amount_mid": 75000,
+      "date": "2025-12-29",
+      "disclosure_date": "2026-02-01",
+      "sector": "테크",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Tommy Tuberville",
+      "party": "R",
+      "ticker": "RTX",
+      "asset": "RTX Corporation",
+      "type": "buy",
+      "amount": "$100,001 - $250,000",
+      "amount_mid": 175000,
+      "date": "2025-12-18",
+      "disclosure_date": "2026-01-08",
+      "sector": "방산",
+      "conflict": true,
+      "chamber": "senate",
+      "owner": "Self"
+    },
+    {
+      "rep": "Josh Gottheimer",
+      "party": "D",
+      "ticker": "MSFT",
+      "asset": "Microsoft Corp",
+      "type": "buy",
+      "amount": "$50,001 - $100,000",
+      "amount_mid": 75000,
+      "date": "2025-12-18",
+      "disclosure_date": "2026-01-14",
+      "sector": "소프트웨어",
+      "conflict": false,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Josh Gottheimer",
+      "party": "D",
+      "ticker": "V",
+      "asset": "Visa Inc",
+      "type": "buy",
+      "amount": "$15,001 - $50,000",
+      "amount_mid": 32500,
+      "date": "2025-12-16",
+      "disclosure_date": "2026-01-11",
+      "sector": "금융",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Lois Frankel",
+      "party": "D",
+      "ticker": "UNH",
+      "asset": "UnitedHealth",
+      "type": "buy",
+      "amount": "$15,001 - $50,000",
+      "amount_mid": 32500,
+      "date": "2025-12-14",
+      "disclosure_date": "2026-01-10",
+      "sector": "헬스케어",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Nancy Pelosi",
+      "party": "D",
+      "ticker": "GOOGL",
+      "asset": "Alphabet Inc",
+      "type": "buy",
+      "amount": "$250,001 - $500,000",
+      "amount_mid": 375000,
+      "date": "2025-12-13",
+      "disclosure_date": "2026-01-18",
+      "sector": "테크",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Nancy Pelosi",
+      "party": "D",
+      "ticker": "NVDA",
+      "asset": "NVIDIA Corp",
+      "type": "buy",
+      "amount": "$1,000,001 - $5,000,000",
+      "amount_mid": 3000000,
+      "date": "2025-12-08",
+      "disclosure_date": "2025-12-23",
+      "sector": "반도체",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Marjorie Taylor Greene",
+      "party": "R",
+      "ticker": "TSLA",
+      "asset": "Tesla Inc",
+      "type": "buy",
+      "amount": "$15,001 - $50,000",
+      "amount_mid": 32500,
+      "date": "2025-12-02",
+      "disclosure_date": "2026-01-15",
+      "sector": "전기차",
+      "conflict": false,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Michael McCaul",
+      "party": "R",
+      "ticker": "AVGO",
+      "asset": "Broadcom Inc",
+      "type": "buy",
+      "amount": "$250,001 - $500,000",
+      "amount_mid": 375000,
+      "date": "2025-11-14",
+      "disclosure_date": "2025-12-21",
+      "sector": "반도체",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Daniel Goldman",
+      "party": "D",
+      "ticker": "AMZN",
+      "asset": "Amazon.com",
+      "type": "buy",
+      "amount": "$50,001 - $100,000",
+      "amount_mid": 75000,
+      "date": "2025-10-28",
+      "disclosure_date": "2025-12-04",
+      "sector": "테크",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Michael McCaul",
+      "party": "R",
+      "ticker": "INTC",
+      "asset": "Intel Corp",
+      "type": "sell",
+      "amount": "$100,001 - $250,000",
+      "amount_mid": 175000,
+      "date": "2025-10-19",
+      "disclosure_date": "2025-11-24",
+      "sector": "반도체",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Josh Gottheimer",
+      "party": "D",
+      "ticker": "GOOGL",
+      "asset": "Alphabet Inc",
+      "type": "buy",
+      "amount": "$15,001 - $50,000",
+      "amount_mid": 32500,
+      "date": "2025-10-16",
+      "disclosure_date": "2025-11-30",
+      "sector": "테크",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Dan Crenshaw",
+      "party": "R",
+      "ticker": "PLTR",
+      "asset": "Palantir Tech",
+      "type": "buy",
+      "amount": "$1,001 - $15,000",
+      "amount_mid": 8000,
+      "date": "2025-10-14",
+      "disclosure_date": "2025-11-12",
+      "sector": "소프트웨어",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Nancy Pelosi",
+      "party": "D",
+      "ticker": "MSFT",
+      "asset": "Microsoft Corp",
+      "type": "sell",
+      "amount": "$250,001 - $500,000",
+      "amount_mid": 375000,
+      "date": "2025-10-12",
+      "disclosure_date": "2025-10-31",
+      "sector": "소프트웨어",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Debbie Wasserman Schultz",
+      "party": "D",
+      "ticker": "NEM",
+      "asset": "Newmont Corp",
+      "type": "buy",
+      "amount": "$1,001 - $15,000",
+      "amount_mid": 8000,
+      "date": "2025-10-10",
+      "disclosure_date": "2025-11-18",
+      "sector": "광업",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Tommy Tuberville",
+      "party": "R",
+      "ticker": "LMT",
+      "asset": "Lockheed Martin",
+      "type": "buy",
+      "amount": "$50,001 - $100,000",
+      "amount_mid": 75000,
+      "date": "2025-10-07",
+      "disclosure_date": "2025-11-07",
+      "sector": "방산",
+      "conflict": true,
+      "chamber": "senate",
+      "owner": "Self"
+    },
+    {
+      "rep": "Rick Scott",
+      "party": "R",
+      "ticker": "CVX",
+      "asset": "Chevron Corp",
+      "type": "buy",
+      "amount": "$100,001 - $250,000",
+      "amount_mid": 175000,
+      "date": "2025-10-07",
+      "disclosure_date": "2025-11-18",
+      "sector": "에너지",
+      "conflict": true,
+      "chamber": "senate",
+      "owner": "Self"
+    },
+    {
+      "rep": "Michael McCaul",
+      "party": "R",
+      "ticker": "ORCL",
+      "asset": "Oracle Corp",
+      "type": "buy",
+      "amount": "$100,001 - $250,000",
+      "amount_mid": 175000,
+      "date": "2025-10-01",
+      "disclosure_date": "2025-10-21",
+      "sector": "소프트웨어",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Mark Green",
+      "party": "R",
+      "ticker": "LMT",
+      "asset": "Lockheed Martin",
+      "type": "buy",
+      "amount": "$50,001 - $100,000",
+      "amount_mid": 75000,
+      "date": "2025-09-21",
+      "disclosure_date": "2025-10-31",
+      "sector": "방산",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Josh Gottheimer",
+      "party": "D",
+      "ticker": "JPM",
+      "asset": "JPMorgan Chase",
+      "type": "buy",
+      "amount": "$50,001 - $100,000",
+      "amount_mid": 75000,
+      "date": "2025-09-20",
+      "disclosure_date": "2025-10-27",
+      "sector": "금융",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Nancy Pelosi",
+      "party": "D",
+      "ticker": "AAPL",
+      "asset": "Apple Inc",
+      "type": "buy",
+      "amount": "$500,001 - $1,000,000",
+      "amount_mid": 750000,
+      "date": "2025-09-16",
+      "disclosure_date": "2025-10-08",
+      "sector": "테크",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Michael McCaul",
+      "party": "R",
+      "ticker": "AMD",
+      "asset": "AMD Inc",
+      "type": "buy",
+      "amount": "$100,001 - $250,000",
+      "amount_mid": 175000,
+      "date": "2025-09-14",
+      "disclosure_date": "2025-10-03",
+      "sector": "반도체",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Lois Frankel",
+      "party": "D",
+      "ticker": "JNJ",
+      "asset": "Johnson & Johnson",
+      "type": "buy",
+      "amount": "$1,001 - $15,000",
+      "amount_mid": 8000,
+      "date": "2025-09-14",
+      "disclosure_date": "2025-10-13",
+      "sector": "헬스케어",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Rick Scott",
+      "party": "R",
+      "ticker": "XOM",
+      "asset": "Exxon Mobil",
+      "type": "buy",
+      "amount": "$250,001 - $500,000",
+      "amount_mid": 375000,
+      "date": "2025-09-08",
+      "disclosure_date": "2025-09-25",
+      "sector": "에너지",
+      "conflict": true,
+      "chamber": "senate",
+      "owner": "Self"
+    },
+    {
+      "rep": "Josh Gottheimer",
+      "party": "D",
+      "ticker": "META",
+      "asset": "Meta Platforms",
+      "type": "buy",
+      "amount": "$15,001 - $50,000",
+      "amount_mid": 32500,
+      "date": "2025-08-15",
+      "disclosure_date": "2025-09-02",
+      "sector": "테크",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Mark Green",
+      "party": "R",
+      "ticker": "RTX",
+      "asset": "RTX Corporation",
+      "type": "buy",
+      "amount": "$15,001 - $50,000",
+      "amount_mid": 32500,
+      "date": "2025-08-11",
+      "disclosure_date": "2025-09-14",
+      "sector": "방산",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Daniel Goldman",
+      "party": "D",
+      "ticker": "GOOGL",
+      "asset": "Alphabet Inc",
+      "type": "buy",
+      "amount": "$50,001 - $100,000",
+      "amount_mid": 75000,
+      "date": "2025-08-02",
+      "disclosure_date": "2025-09-04",
+      "sector": "테크",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Nancy Pelosi",
+      "party": "D",
+      "ticker": "NFLX",
+      "asset": "Netflix Inc",
+      "type": "sell",
+      "amount": "$500,001 - $1,000,000",
+      "amount_mid": 750000,
+      "date": "2025-08-01",
+      "disclosure_date": "2025-08-21",
+      "sector": "테크",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Tommy Tuberville",
+      "party": "R",
+      "ticker": "INTC",
+      "asset": "Intel Corp",
+      "type": "sell",
+      "amount": "$50,001 - $100,000",
+      "amount_mid": 75000,
+      "date": "2025-07-29",
+      "disclosure_date": "2025-08-24",
+      "sector": "반도체",
+      "conflict": true,
+      "chamber": "senate",
+      "owner": "Self"
+    },
+    {
+      "rep": "Ro Khanna",
+      "party": "D",
+      "ticker": "AAPL",
+      "asset": "Apple Inc",
+      "type": "buy",
+      "amount": "$1,001 - $15,000",
+      "amount_mid": 8000,
+      "date": "2025-07-25",
+      "disclosure_date": "2025-08-11",
+      "sector": "테크",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Michael McCaul",
+      "party": "R",
+      "ticker": "MSFT",
+      "asset": "Microsoft Corp",
+      "type": "buy",
+      "amount": "$250,001 - $500,000",
+      "amount_mid": 375000,
+      "date": "2025-07-02",
+      "disclosure_date": "2025-07-27",
+      "sector": "소프트웨어",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Marjorie Taylor Greene",
+      "party": "R",
+      "ticker": "DJT",
+      "asset": "Trump Media",
+      "type": "buy",
+      "amount": "$50,001 - $100,000",
+      "amount_mid": 75000,
+      "date": "2025-06-13",
+      "disclosure_date": "2025-07-15",
+      "sector": "미디어",
+      "conflict": false,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Rick Scott",
+      "party": "R",
+      "ticker": "COP",
+      "asset": "ConocoPhillips",
+      "type": "buy",
+      "amount": "$50,001 - $100,000",
+      "amount_mid": 75000,
+      "date": "2025-06-12",
+      "disclosure_date": "2025-07-09",
+      "sector": "에너지",
+      "conflict": true,
+      "chamber": "senate",
+      "owner": "Self"
+    },
+    {
+      "rep": "Tommy Tuberville",
+      "party": "R",
+      "ticker": "PLTR",
+      "asset": "Palantir Tech",
+      "type": "buy",
+      "amount": "$50,001 - $100,000",
+      "amount_mid": 75000,
+      "date": "2025-05-06",
+      "disclosure_date": "2025-06-13",
+      "sector": "소프트웨어",
+      "conflict": false,
+      "chamber": "senate",
+      "owner": "Self"
+    },
+    {
+      "rep": "Nancy Pelosi",
+      "party": "D",
+      "ticker": "AVGO",
+      "asset": "Broadcom Inc",
+      "type": "buy",
+      "amount": "$1,000,001 - $5,000,000",
+      "amount_mid": 3000000,
+      "date": "2025-04-30",
+      "disclosure_date": "2025-05-17",
+      "sector": "반도체",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Dan Crenshaw",
+      "party": "R",
+      "ticker": "MSFT",
+      "asset": "Microsoft Corp",
+      "type": "buy",
+      "amount": "$15,001 - $50,000",
+      "amount_mid": 32500,
+      "date": "2025-04-30",
+      "disclosure_date": "2025-05-28",
+      "sector": "소프트웨어",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Ro Khanna",
+      "party": "D",
+      "ticker": "MSFT",
+      "asset": "Microsoft Corp",
+      "type": "buy",
+      "amount": "$1,001 - $15,000",
+      "amount_mid": 8000,
+      "date": "2025-04-27",
+      "disclosure_date": "2025-05-21",
+      "sector": "소프트웨어",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Tommy Tuberville",
+      "party": "R",
+      "ticker": "BA",
+      "asset": "Boeing Co",
+      "type": "sell",
+      "amount": "$15,001 - $50,000",
+      "amount_mid": 32500,
+      "date": "2025-04-22",
+      "disclosure_date": "2025-05-13",
+      "sector": "방산",
+      "conflict": true,
+      "chamber": "senate",
+      "owner": "Self"
+    },
+    {
+      "rep": "Dan Crenshaw",
+      "party": "R",
+      "ticker": "XOM",
+      "asset": "Exxon Mobil",
+      "type": "buy",
+      "amount": "$15,001 - $50,000",
+      "amount_mid": 32500,
+      "date": "2025-04-08",
+      "disclosure_date": "2025-05-01",
+      "sector": "에너지",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Nancy Pelosi",
+      "party": "D",
+      "ticker": "CRM",
+      "asset": "Salesforce Inc",
+      "type": "buy",
+      "amount": "$500,001 - $1,000,000",
+      "amount_mid": 750000,
+      "date": "2025-04-07",
+      "disclosure_date": "2025-05-05",
+      "sector": "소프트웨어",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Tommy Tuberville",
+      "party": "R",
+      "ticker": "GD",
+      "asset": "General Dynamics",
+      "type": "buy",
+      "amount": "$100,001 - $250,000",
+      "amount_mid": 175000,
+      "date": "2025-04-01",
+      "disclosure_date": "2025-04-16",
+      "sector": "방산",
+      "conflict": true,
+      "chamber": "senate",
+      "owner": "Self"
+    },
+    {
+      "rep": "Daniel Goldman",
+      "party": "D",
+      "ticker": "NVDA",
+      "asset": "NVIDIA Corp",
+      "type": "buy",
+      "amount": "$100,001 - $250,000",
+      "amount_mid": 175000,
+      "date": "2025-03-19",
+      "disclosure_date": "2025-04-22",
+      "sector": "반도체",
+      "conflict": false,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Lois Frankel",
+      "party": "D",
+      "ticker": "PFE",
+      "asset": "Pfizer Inc",
+      "type": "sell",
+      "amount": "$1,001 - $15,000",
+      "amount_mid": 8000,
+      "date": "2025-03-15",
+      "disclosure_date": "2025-04-25",
+      "sector": "헬스케어",
+      "conflict": true,
+      "chamber": "house",
+      "owner": "Self"
+    },
+    {
+      "rep": "Nancy Pelosi",
+      "party": "D",
+      "ticker": "TSLA",
+      "asset": "Tesla Inc",
+      "type": "buy",
+      "amount": "$500,001 - $1,000,000",
+      "amount_mid": 750000,
+      "date": "2025-03-15",
+      "disclosure_date": "2025-04-04",
+      "sector": "전기차",
+      "conflict": false,
+      "chamber": "house",
+      "owner": "Self"
+    }
+  ],
   "stats": {
-    "popular_stocks": [],
-    "sectors": [],
-    "party_stats": {
-      "D": {
-        "buy": 0,
-        "sell": 0,
-        "buy_vol": 0,
-        "sell_vol": 0,
+    "popular_stocks": [
+      {
+        "ticker": "NVDA",
+        "asset": "NVIDIA Corp",
+        "count": 4,
+        "volume": 4300000,
+        "traders": 4,
+        "conflicts": 3,
+        "sector": "반도체"
+      },
+      {
+        "ticker": "MSFT",
+        "asset": "Microsoft Corp",
+        "count": 4,
+        "volume": 490500,
+        "traders": 4,
+        "conflicts": 3,
+        "sector": "소프트웨어"
+      },
+      {
+        "ticker": "GOOGL",
+        "asset": "Alphabet Inc",
+        "count": 3,
+        "volume": 482500,
+        "traders": 3,
+        "conflicts": 3,
+        "sector": "테크"
+      },
+      {
+        "ticker": "RTX",
+        "asset": "RTX Corporation",
+        "count": 2,
+        "volume": 207500,
+        "traders": 2,
+        "conflicts": 2,
+        "sector": "방산"
+      },
+      {
+        "ticker": "TSLA",
+        "asset": "Tesla Inc",
+        "count": 2,
+        "volume": 782500,
+        "traders": 2,
+        "conflicts": 0,
+        "sector": "전기차"
+      },
+      {
+        "ticker": "AVGO",
+        "asset": "Broadcom Inc",
+        "count": 2,
+        "volume": 3375000,
+        "traders": 2,
+        "conflicts": 2,
+        "sector": "반도체"
+      },
+      {
+        "ticker": "PLTR",
+        "asset": "Palantir Tech",
+        "count": 2,
+        "volume": 83000,
+        "traders": 2,
+        "conflicts": 1,
+        "sector": "소프트웨어"
+      },
+      {
+        "ticker": "LMT",
+        "asset": "Lockheed Martin",
+        "count": 2,
+        "volume": 150000,
+        "traders": 2,
+        "conflicts": 2,
+        "sector": "방산"
+      },
+      {
+        "ticker": "AAPL",
+        "asset": "Apple Inc",
+        "count": 2,
+        "volume": 758000,
+        "traders": 2,
+        "conflicts": 2,
+        "sector": "테크"
+      },
+      {
+        "ticker": "XOM",
+        "asset": "Exxon Mobil",
+        "count": 2,
+        "volume": 407500,
+        "traders": 2,
+        "conflicts": 2,
+        "sector": "에너지"
+      },
+      {
+        "ticker": "NOC",
+        "asset": "Northrop Grumman",
+        "count": 1,
+        "volume": 32500,
+        "traders": 1,
+        "conflicts": 1,
+        "sector": "방산"
+      },
+      {
+        "ticker": "HL",
+        "asset": "Hecla Mining",
+        "count": 1,
+        "volume": 8000,
+        "traders": 1,
+        "conflicts": 1,
+        "sector": "광업"
+      },
+      {
+        "ticker": "V",
+        "asset": "Visa Inc",
+        "count": 1,
+        "volume": 32500,
+        "traders": 1,
+        "conflicts": 1,
+        "sector": "금융"
+      },
+      {
+        "ticker": "UNH",
+        "asset": "UnitedHealth",
+        "count": 1,
+        "volume": 32500,
+        "traders": 1,
+        "conflicts": 1,
+        "sector": "헬스케어"
+      },
+      {
+        "ticker": "AMZN",
+        "asset": "Amazon.com",
+        "count": 1,
+        "volume": 75000,
+        "traders": 1,
+        "conflicts": 1,
+        "sector": "테크"
+      },
+      {
+        "ticker": "NEM",
+        "asset": "Newmont Corp",
+        "count": 1,
+        "volume": 8000,
+        "traders": 1,
+        "conflicts": 1,
+        "sector": "광업"
+      },
+      {
+        "ticker": "CVX",
+        "asset": "Chevron Corp",
+        "count": 1,
+        "volume": 175000,
+        "traders": 1,
+        "conflicts": 1,
+        "sector": "에너지"
+      },
+      {
+        "ticker": "ORCL",
+        "asset": "Oracle Corp",
+        "count": 1,
+        "volume": 175000,
+        "traders": 1,
+        "conflicts": 1,
+        "sector": "소프트웨어"
+      },
+      {
+        "ticker": "JPM",
+        "asset": "JPMorgan Chase",
+        "count": 1,
+        "volume": 75000,
+        "traders": 1,
+        "conflicts": 1,
+        "sector": "금융"
+      },
+      {
+        "ticker": "AMD",
+        "asset": "AMD Inc",
+        "count": 1,
+        "volume": 175000,
+        "traders": 1,
+        "conflicts": 1,
+        "sector": "반도체"
+      }
+    ],
+    "sectors": [
+      {
+        "name": "반도체",
+        "value": 7850000,
+        "count": 7,
+        "conflicts": 6
+      },
+      {
+        "name": "소프트웨어",
+        "value": 1498500,
+        "count": 8,
+        "conflicts": 6
+      },
+      {
+        "name": "테크",
+        "value": 1348000,
+        "count": 7,
+        "conflicts": 7
+      },
+      {
+        "name": "전기차",
+        "value": 782500,
+        "count": 2,
         "conflicts": 0
       },
-      "R": {
-        "buy": 0,
-        "sell": 0,
-        "buy_vol": 0,
-        "sell_vol": 0,
+      {
+        "name": "에너지",
+        "value": 657500,
+        "count": 4,
+        "conflicts": 4
+      },
+      {
+        "name": "방산",
+        "value": 565000,
+        "count": 6,
+        "conflicts": 6
+      },
+      {
+        "name": "금융",
+        "value": 107500,
+        "count": 2,
+        "conflicts": 2
+      },
+      {
+        "name": "미디어",
+        "value": 75000,
+        "count": 1,
         "conflicts": 0
+      },
+      {
+        "name": "헬스케어",
+        "value": 40500,
+        "count": 2,
+        "conflicts": 2
+      },
+      {
+        "name": "광업",
+        "value": 16000,
+        "count": 2,
+        "conflicts": 2
+      }
+    ],
+    "party_stats": {
+      "D": {
+        "buy": 20,
+        "sell": 4,
+        "buy_vol": 9270000,
+        "sell_vol": 1208000,
+        "conflicts": 21
+      },
+      "R": {
+        "buy": 21,
+        "sell": 3,
+        "buy_vol": 3670500,
+        "sell_vol": 282500,
+        "conflicts": 21
       }
     },
-    "top_traders": []
+    "top_traders": [
+      {
+        "name": "Nancy Pelosi",
+        "party": "D",
+        "buys": 6,
+        "sells": 2,
+        "volume": 9750000,
+        "tickers": 8,
+        "conflicts": 7
+      },
+      {
+        "name": "Michael McCaul",
+        "party": "R",
+        "buys": 5,
+        "sells": 1,
+        "volume": 2025000,
+        "tickers": 6,
+        "conflicts": 6
+      },
+      {
+        "name": "Tommy Tuberville",
+        "party": "R",
+        "buys": 5,
+        "sells": 2,
+        "volume": 982500,
+        "tickers": 7,
+        "conflicts": 6
+      },
+      {
+        "name": "Rick Scott",
+        "party": "R",
+        "buys": 3,
+        "sells": 0,
+        "volume": 625000,
+        "tickers": 3,
+        "conflicts": 3
+      },
+      {
+        "name": "Daniel Goldman",
+        "party": "D",
+        "buys": 3,
+        "sells": 1,
+        "volume": 400000,
+        "tickers": 4,
+        "conflicts": 3
+      },
+      {
+        "name": "Josh Gottheimer",
+        "party": "D",
+        "buys": 5,
+        "sells": 0,
+        "volume": 247500,
+        "tickers": 5,
+        "conflicts": 4
+      },
+      {
+        "name": "Mark Green",
+        "party": "R",
+        "buys": 3,
+        "sells": 0,
+        "volume": 140000,
+        "tickers": 3,
+        "conflicts": 3
+      },
+      {
+        "name": "Marjorie Taylor Greene",
+        "party": "R",
+        "buys": 2,
+        "sells": 0,
+        "volume": 107500,
+        "tickers": 2,
+        "conflicts": 0
+      },
+      {
+        "name": "Dan Crenshaw",
+        "party": "R",
+        "buys": 3,
+        "sells": 0,
+        "volume": 73000,
+        "tickers": 3,
+        "conflicts": 3
+      },
+      {
+        "name": "Lois Frankel",
+        "party": "D",
+        "buys": 2,
+        "sells": 1,
+        "volume": 48500,
+        "tickers": 3,
+        "conflicts": 3
+      },
+      {
+        "name": "Debbie Wasserman Schultz",
+        "party": "D",
+        "buys": 2,
+        "sells": 0,
+        "volume": 16000,
+        "tickers": 2,
+        "conflicts": 2
+      },
+      {
+        "name": "Ro Khanna",
+        "party": "D",
+        "buys": 2,
+        "sells": 0,
+        "volume": 16000,
+        "tickers": 2,
+        "conflicts": 2
+      }
+    ]
   },
   "politician_info": {
     "Nancy Pelosi": {
@@ -32,7 +1104,6 @@
       "committees": [
         "전 하원의장"
       ],
-      "subcommittees": [],
       "jurisdiction": [
         "입법 전반",
         "예산",
@@ -45,14 +1116,13 @@
         "소프트웨어",
         "방산"
       ],
-      "note": "남편 Paul Pelosi 명의 거래로 주목. 기술주 매수 타이밍이 정책 발표와 근접해 논란"
+      "note": "남편 Paul Pelosi 명의 거래. 기술주 매수 타이밍이 정책 발표와 근접"
     },
     "Dan Crenshaw": {
       "committees": [
         "하원 에너지·상업위원회",
         "하원 정보위원회"
       ],
-      "subcommittees": [],
       "jurisdiction": [
         "에너지",
         "통신",
@@ -70,7 +1140,6 @@
         "상원 군사위원회",
         "상원 농업위원회"
       ],
-      "subcommittees": [],
       "jurisdiction": [
         "국방예산",
         "군사계약"
@@ -86,7 +1155,6 @@
         "하원 국토안보위원회 (위원장)",
         "하원 군사위원회"
       ],
-      "subcommittees": [],
       "jurisdiction": [
         "국토안보",
         "군사계약",
@@ -101,7 +1169,6 @@
       "committees": [
         "하원 금융서비스위원회"
       ],
-      "subcommittees": [],
       "jurisdiction": [
         "은행규제",
         "핀테크",
@@ -117,7 +1184,6 @@
       "committees": [
         "하원 국토안보위원회"
       ],
-      "subcommittees": [],
       "jurisdiction": [
         "국토안보",
         "정부 운영"
@@ -132,7 +1198,6 @@
       "committees": [
         "하원 군사위원회"
       ],
-      "subcommittees": [],
       "jurisdiction": [
         "국방기술",
         "실리콘밸리 기술"
@@ -147,7 +1212,6 @@
       "committees": [
         "하원 외교위원회 (위원장)"
       ],
-      "subcommittees": [],
       "jurisdiction": [
         "외교정책",
         "반도체 수출통제"
@@ -162,7 +1226,6 @@
       "committees": [
         "하원 국토안보위원회"
       ],
-      "subcommittees": [],
       "jurisdiction": [
         "국토안보",
         "기업규제"
@@ -176,9 +1239,6 @@
     "Debbie Wasserman Schultz": {
       "committees": [
         "하원 세출위원회"
-      ],
-      "subcommittees": [
-        "환경·제조·핵심광물 소위원회"
       ],
       "jurisdiction": [
         "환경정책",
@@ -195,7 +1255,6 @@
       "committees": [
         "상원 상업·과학·교통위원회"
       ],
-      "subcommittees": [],
       "jurisdiction": [
         "에너지정책",
         "교통"
@@ -209,7 +1268,6 @@
       "committees": [
         "하원 세출위원회"
       ],
-      "subcommittees": [],
       "jurisdiction": [
         "예산배분",
         "보건예산"
