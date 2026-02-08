@@ -1,0 +1,235 @@
+{
+  "updated_at": "2026-02-08 14:45:52 KST",
+  "total_trades": 0,
+  "total_buy": 0,
+  "total_sell": 0,
+  "total_conflicts": 0,
+  "trades": [],
+  "stats": {
+    "popular_stocks": [],
+    "sectors": [],
+    "party_stats": {
+      "D": {
+        "buy": 0,
+        "sell": 0,
+        "buy_vol": 0,
+        "sell_vol": 0,
+        "conflicts": 0
+      },
+      "R": {
+        "buy": 0,
+        "sell": 0,
+        "buy_vol": 0,
+        "sell_vol": 0,
+        "conflicts": 0
+      }
+    },
+    "top_traders": []
+  },
+  "politician_info": {
+    "Nancy Pelosi": {
+      "name_ko": "낸시 펠로시",
+      "committees": [
+        "전 하원의장"
+      ],
+      "subcommittees": [],
+      "jurisdiction": [
+        "입법 전반",
+        "예산",
+        "국방",
+        "기술정책"
+      ],
+      "sectors": [
+        "테크",
+        "반도체",
+        "소프트웨어",
+        "방산"
+      ],
+      "note": "남편 Paul Pelosi 명의 거래로 주목. 기술주 매수 타이밍이 정책 발표와 근접해 논란"
+    },
+    "Dan Crenshaw": {
+      "committees": [
+        "하원 에너지·상업위원회",
+        "하원 정보위원회"
+      ],
+      "subcommittees": [],
+      "jurisdiction": [
+        "에너지",
+        "통신",
+        "사이버보안"
+      ],
+      "sectors": [
+        "소프트웨어",
+        "에너지",
+        "방산"
+      ],
+      "note": "정보위 소속으로 방산·사이버 기업 투자 주목"
+    },
+    "Tommy Tuberville": {
+      "committees": [
+        "상원 군사위원회",
+        "상원 농업위원회"
+      ],
+      "subcommittees": [],
+      "jurisdiction": [
+        "국방예산",
+        "군사계약"
+      ],
+      "sectors": [
+        "방산",
+        "반도체"
+      ],
+      "note": "군사위 소속 + 방산주 대량 매수 → 윤리 조사 대상"
+    },
+    "Mark Green": {
+      "committees": [
+        "하원 국토안보위원회 (위원장)",
+        "하원 군사위원회"
+      ],
+      "subcommittees": [],
+      "jurisdiction": [
+        "국토안보",
+        "군사계약",
+        "방위산업"
+      ],
+      "sectors": [
+        "방산"
+      ],
+      "note": "국토안보위 위원장으로서 방산 기업 직접 관할 + 매수"
+    },
+    "Josh Gottheimer": {
+      "committees": [
+        "하원 금융서비스위원회"
+      ],
+      "subcommittees": [],
+      "jurisdiction": [
+        "은행규제",
+        "핀테크",
+        "디지털자산"
+      ],
+      "sectors": [
+        "테크",
+        "금융"
+      ],
+      "note": "빅테크 규제 논의 중 기술주 매수"
+    },
+    "Marjorie Taylor Greene": {
+      "committees": [
+        "하원 국토안보위원회"
+      ],
+      "subcommittees": [],
+      "jurisdiction": [
+        "국토안보",
+        "정부 운영"
+      ],
+      "sectors": [
+        "전기차",
+        "미디어"
+      ],
+      "note": "DJT 매수는 정치적 충성도 표현"
+    },
+    "Ro Khanna": {
+      "committees": [
+        "하원 군사위원회"
+      ],
+      "subcommittees": [],
+      "jurisdiction": [
+        "국방기술",
+        "실리콘밸리 기술"
+      ],
+      "sectors": [
+        "테크",
+        "소프트웨어"
+      ],
+      "note": "실리콘밸리 지역구, 기술주 활발"
+    },
+    "Michael McCaul": {
+      "committees": [
+        "하원 외교위원회 (위원장)"
+      ],
+      "subcommittees": [],
+      "jurisdiction": [
+        "외교정책",
+        "반도체 수출통제"
+      ],
+      "sectors": [
+        "반도체",
+        "소프트웨어"
+      ],
+      "note": "CHIPS Act 반도체 정책 주도 + NVDA, AVGO 대량 매수"
+    },
+    "Daniel Goldman": {
+      "committees": [
+        "하원 국토안보위원회"
+      ],
+      "subcommittees": [],
+      "jurisdiction": [
+        "국토안보",
+        "기업규제"
+      ],
+      "sectors": [
+        "테크",
+        "금융"
+      ],
+      "note": "뉴욕 금융가 지역구"
+    },
+    "Debbie Wasserman Schultz": {
+      "committees": [
+        "하원 세출위원회"
+      ],
+      "subcommittees": [
+        "환경·제조·핵심광물 소위원회"
+      ],
+      "jurisdiction": [
+        "환경정책",
+        "핵심광물",
+        "광업규제"
+      ],
+      "sectors": [
+        "광업",
+        "에너지"
+      ],
+      "note": "핵심광물 소위 소속 + Hecla Mining(HL) 매수"
+    },
+    "Rick Scott": {
+      "committees": [
+        "상원 상업·과학·교통위원회"
+      ],
+      "subcommittees": [],
+      "jurisdiction": [
+        "에너지정책",
+        "교통"
+      ],
+      "sectors": [
+        "에너지"
+      ],
+      "note": "에너지 위원회 소속 + 석유 대기업 투자"
+    },
+    "Lois Frankel": {
+      "committees": [
+        "하원 세출위원회"
+      ],
+      "subcommittees": [],
+      "jurisdiction": [
+        "예산배분",
+        "보건예산"
+      ],
+      "sectors": [
+        "헬스케어"
+      ],
+      "note": "세출위 소속 보건 예산 영향력"
+    }
+  },
+  "sector_jurisdiction": {
+    "반도체": "반도체 수출통제·CHIPS Act",
+    "테크": "빅테크 규제·독점금지",
+    "소프트웨어": "사이버보안·기술정책",
+    "방산": "국방예산·군사계약",
+    "전기차": "친환경·EV 보조금",
+    "미디어": "통신·미디어 규제",
+    "금융": "은행규제·핀테크",
+    "에너지": "에너지·화석연료",
+    "헬스케어": "보건예산·의약품 규제",
+    "광업": "광물 규제·환경정책"
+  }
+}
