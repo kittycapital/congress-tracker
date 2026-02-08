@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>미국 의회 주식 거래 트래커</title>
+<script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap');
+:root{--bg:#06080F;--card:#0D1117;--alt:#161B22;--bdr:#21262D;--txt:#E6EDF3;--dim:#8B949E;--ac:#7C3AED;--dem:#3B82F6;--rep:#EF4444;--buy:#10B981;--sell:#F59E0B;--dia:#F59E0B}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',-apple-system,sans-serif;background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased}
+.m{font-family:'JetBrains Mono',monospace}
+.ct{max-width:1200px;margin:0 auto;padding:0 16px}
+.cd{background:var(--card);border-radius:12px;border:1px solid var(--bdr)}
+
+.hd{background:linear-gradient(135deg,#0D1117,#1a1040,#0D1117);border-bottom:1px solid var(--bdr);padding:12px 16px}
+.hr{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.hl{display:flex;align-items:center;gap:8px}
+.hd h1{font-size:16px;font-weight:800;background:linear-gradient(135deg,#A78BFA,#EC4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hs{font-size:10px;color:var(--dim)}
+.sr{display:flex;gap:6px;flex-wrap:wrap}
+.sp{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:3px 10px;font-size:10px;white-space:nowrap}
+.sp b{font-weight:700;margin-left:2px}
+
+.cs{display:grid;grid-template-columns:1fr;gap:0;margin-top:8px}
+.cs.wp{grid-template-columns:1fr 290px;gap:10px}
+.ct2{display:flex;justify-content:space-between;align-items:center;padding:8px 12px 4px;flex-wrap:wrap;gap:4px}
+.ci{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.ctk{font-size:15px;font-weight:800;color:#A78BFA}
+.ca{font-size:11px;color:var(--dim)}
+.cp{font-size:18px;font-weight:800}
+.cc{font-size:11px;font-weight:700}.cc.u{color:var(--buy)}.cc.d{color:var(--sell)}
+.cgs{display:flex;gap:3px;flex-wrap:wrap}
+.cg{border-radius:5px;padding:1px 7px;font-size:9px;white-space:nowrap}
+.cg.b{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:var(--buy)}
+.cg.s{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);color:var(--sell)}
+#tv{width:100%;height:340px}
+.cl{display:flex;gap:10px;justify-content:center;padding:4px 0;font-size:9px;color:var(--dim)}
+.ld{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:2px;vertical-align:middle}
+
+.pp{overflow-y:auto;max-height:440px;padding:12px;font-size:11px}
+.ph{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.pa{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800}
+.pa.de{background:rgba(59,130,246,0.2);color:var(--dem)}.pa.re{background:rgba(239,68,68,0.2);color:var(--rep)}
+.ps{font-size:9px;color:var(--dim);font-weight:700;text-transform:uppercase;letter-spacing:0.6px;margin:9px 0 3px}
+.pc{background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.18);border-radius:5px;padding:3px 7px;margin-bottom:2px;font-size:10px;color:#C4B5FD}
+.psc{background:rgba(236,72,153,0.08);border:1px solid rgba(236,72,153,0.18);border-radius:5px;padding:3px 7px;margin-bottom:2px;font-size:10px;color:#F9A8D4}
+.ptg{display:flex;flex-wrap:wrap;gap:3px}
+.pt{background:rgba(255,255,255,0.05);border-radius:8px;padding:1px 7px;font-size:9px;color:var(--dim)}
+.pdt{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);border-radius:8px;padding:1px 7px;font-size:9px;color:var(--dia);font-weight:600}
+.pn{background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.1);border-radius:6px;padding:7px;margin-top:7px}
+.pn b{font-size:9px;color:var(--dia)}.pn p{font-size:10px;color:var(--dim);line-height:1.5;margin-top:1px}
+.ptr{display:flex;align-items:center;gap:5px;padding:3px 5px;border-radius:4px;cursor:pointer;transition:background .12s;font-size:10px}
+.ptr:hover{background:rgba(255,255,255,0.04)}.ptr.sl{background:rgba(124,58,237,0.1)}
+
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--bdr);padding-top:8px;overflow-x:auto}
+.tb{padding:6px 13px;border:none;background:transparent;color:var(--dim);border-bottom:2px solid transparent;cursor:pointer;font-size:11px;font-weight:500;border-radius:5px 5px 0 0;transition:all .2s;white-space:nowrap;font-family:inherit}
+.tb.ac{background:rgba(124,58,237,0.1);color:#C4B5FD;border-bottom-color:#818CF8;font-weight:700}
+.flt{display:flex;gap:4px;padding:8px 0;flex-wrap:wrap;align-items:center}
+.fb{padding:3px 10px;border:1px solid var(--bdr);border-radius:12px;background:transparent;color:var(--dim);cursor:pointer;font-size:10px;font-family:inherit;transition:all .2s}
+.fb.ac{border-color:var(--ac);background:rgba(124,58,237,0.12);color:#C4B5FD}
+.fb.di.ac{border-color:var(--dia);background:rgba(245,158,11,0.12);color:var(--dia)}
+.fs{width:1px;height:18px;background:var(--bdr);margin:0 2px}
+
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11px}
+thead tr{background:rgba(255,255,255,0.02)}
+th{padding:7px 9px;text-align:left;color:var(--dim);font-weight:600;font-size:9px;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--bdr);white-space:nowrap}
+td{padding:7px 9px;border-bottom:1px solid var(--bdr)}
+tr.ck{cursor:pointer;transition:background .1s}tr.ck:hover{background:rgba(255,255,255,0.02)}tr.ck.sl{background:rgba(124,58,237,0.05)}
+
+.bg{padding:1px 6px;border-radius:7px;font-size:9px;font-weight:700;display:inline-block}
+.bg.de{background:rgba(59,130,246,0.1);color:var(--dem)}.bg.re{background:rgba(239,68,68,0.1);color:var(--rep)}
+.bg.bu{background:rgba(16,185,129,0.1);color:var(--buy)}.bg.se{background:rgba(245,158,11,0.1);color:var(--sell)}
+.bg.sc{background:rgba(255,255,255,0.04);color:var(--dim)}.bg.cf{background:rgba(245,158,11,0.1);color:var(--dia)}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.gf{grid-column:1/-1}
+.scs{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:7px}
+.sc{background:var(--alt);border-radius:8px;padding:10px;cursor:pointer;border:1px solid var(--bdr);transition:all .2s}
+.sc:hover,.sc.sl{border-color:var(--ac)}
+.ses{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:7px}
+.se{background:var(--alt);border-radius:8px;padding:10px;border-left:3px solid var(--ac)}
+.pg{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.pst{background:rgba(255,255,255,0.03);border-radius:7px;padding:9px 11px}
+
+.ft{text-align:center;padding:14px 0;border-top:1px solid var(--bdr);margin-top:14px}
+.ft p{font-size:9px;color:rgba(139,148,158,.5);margin:2px 0}
+.ld2{text-align:center;padding:40px}.spn{display:inline-block;width:24px;height:24px;border:3px solid var(--bdr);border-top-color:var(--ac);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(max-width:768px){.g2{grid-template-columns:1fr}.cs.wp{grid-template-columns:1fr}#tv{height:260px}.sr{gap:3px}}
+</style>
+</head>
+<body>
+<div class="hd"><div class="ct"><div class="hr">
+  <div class="hl"><span style="font-size:20px">🏛️</span><div><h1>미국 의회 주식 거래 트래커</h1><div class="hs">House Stock Watcher 기반 · 💎 위원회 관할 분야 매수</div></div></div>
+  <div class="sr">
+    <div class="sp">거래 <b style="color:#818CF8" id="sT">-</b></div>
+    <div class="sp">매수/매도 <b style="color:#10B981" id="sBS">-</b></div>
+    <div class="sp">💎 <b style="color:#F59E0B" id="sC">-</b></div>
+  </div>
+</div></div></div>
+
+<div class="ct">
+<div class="cs" id="cS">
+  <div class="cd" style="overflow:hidden">
+    <div class="ct2">
+      <div class="ci">
+        <span class="ctk m" id="xT">NVDA</span><span class="ca" id="xA"></span>
+        <span id="xCB" class="bg cf" style="display:none">💎 이해충돌</span>
+        <span class="cp" id="xP">-</span><span class="cc" id="xC"></span>
+      </div>
+      <div class="cgs" id="xTags"></div>
+    </div>
+    <div id="tv"></div>
+    <div class="cl">
+      <span><span class="ld" style="background:var(--buy)"></span>매수</span>
+      <span><span class="ld" style="background:var(--sell)"></span>매도</span>
+      <span><span class="ld" style="background:var(--dia);box-shadow:0 0 0 2px var(--dia)"></span>💎 이해충돌</span>
+    </div>
+  </div>
+  <div class="cd pp" id="pP" style="display:none"><div id="pC"></div></div>
+</div>
+
+<div class="tabs">
+  <button class="tb ac" data-t="trades">📋 거래 내역</button>
+  <button class="tb" data-t="popular">🔥 인기 종목</button>
+  <button class="tb" data-t="party">🏛️ 정당 비교</button>
+  <button class="tb" data-t="sector">📊 섹터 분포</button>
+</div>
+<div class="flt">
+  <button class="fb ac" data-p="all">양당</button><button class="fb" data-p="D">🔵 민주</button><button class="fb" data-p="R">🔴 공화</button>
+  <div class="fs"></div><button class="fb di" id="cfB">💎 이해충돌만</button>
+</div>
+<div id="tC"><div class="ld2"><div class="spn"></div><p style="color:var(--dim);margin-top:8px;font-size:11px">로딩 중...</p></div></div>
+<div class="ft"><p>💎 = 위원회 관할 ↔ 매수 섹터 일치 · 데이터: House Stock Watcher · ⚠️ 투자 조언 아님</p></div>
+</div>
+
+<script>
+let D,sT="NVDA",sP=null,tab="trades",pF="all",cO=false,ch=null,as=null;
+const PC={};
+function gP(tk){if(PC[tk])return PC[tk];const B={NVDA:118,AAPL:189,MSFT:392,GOOGL:156,PLTR:22,RTX:93,TSLA:248,LMT:442,META:512,AMZN:186,CRM:268,AVGO:156,DJT:36,V:279,JPM:196,BAC:38,UNH:532,JNJ:159,XOM:106,CVX:151,GD:276,HL:5.8};const b=B[tk]||100,v=tk==="DJT"?.06:tk==="PLTR"?.04:.022;const r=[];let p=b;const e=new Date("2025-02-20"),s=new Date("2024-07-01");for(let d=new Date(s);d<=e;d.setDate(d.getDate()+1)){if(d.getDay()===0||d.getDay()===6)continue;p*=1+(Math.random()-.47)*v;r.push({time:d.toISOString().slice(0,10),value:+(p.toFixed(2))})}PC[tk]=r;return r}
+const f$=v=>v>=1e6?`$${(v/1e6).toFixed(1)}M`:v>=1e3?`$${(v/1e3).toFixed(0)}K`:`$${v}`;
+
+function iC(){const el=document.getElementById("tv");el.innerHTML="";ch=LightweightCharts.createChart(el,{width:el.clientWidth,height:el.clientHeight||340,layout:{background:{color:"#0D1117"},textColor:"#8B949E",fontFamily:"'Noto Sans KR',sans-serif",fontSize:10},grid:{vertLines:{color:"rgba(255,255,255,0.03)"},horzLines:{color:"rgba(255,255,255,0.03)"}},crosshair:{mode:LightweightCharts.CrosshairMode.Normal,vertLine:{color:"rgba(124,58,237,0.3)",labelBackgroundColor:"#7C3AED"},horzLine:{color:"rgba(124,58,237,0.3)",labelBackgroundColor:"#7C3AED"}},rightPriceScale:{borderColor:"#21262D",scaleMargins:{top:.08,bottom:.06}},timeScale:{borderColor:"#21262D",timeVisible:false},handleScroll:true,handleScale:true});
+as=ch.addAreaSeries({topColor:"rgba(124,58,237,0.3)",bottomColor:"rgba(124,58,237,0)",lineColor:"#7C3AED",lineWidth:2,crosshairMarkerBackgroundColor:"#7C3AED",priceFormat:{type:"price",precision:2,minMove:.01}});
+new ResizeObserver(()=>{if(ch)ch.applyOptions({width:el.clientWidth})}).observe(el)}
+
+function uC(){if(!ch||!as)return;const pr=gP(sT);as.setData(pr);
+const tr=D.trades.filter(t=>t.ticker===sT),mk=[];
+tr.forEach(t=>{const pt=pr.find(p=>p.time===t.date);if(!pt)return;const ib=t.type==="buy";mk.push({time:t.date,position:ib?"belowBar":"aboveBar",color:t.conflict?"#F59E0B":ib?"#10B981":"#F59E0B",shape:ib?"arrowUp":"arrowDown",text:(t.conflict?"💎 ":"")+t.rep.split(" ").pop()+(ib?" 매수":" 매도")})});
+mk.sort((a,b)=>a.time.localeCompare(b.time));as.setMarkers(mk);ch.timeScale().fitContent();
+const a=tr[0]?.asset||sT,lp=pr[pr.length-1]?.value||0,fp=pr[0]?.value||1,cg=((lp-fp)/fp*100).toFixed(1),hc=tr.some(t=>t.conflict);
+document.getElementById("xT").textContent=sT;document.getElementById("xA").textContent=a;
+document.getElementById("xP").textContent=`$${lp.toFixed(2)}`;
+const ce=document.getElementById("xC");ce.textContent=`${+cg>=0?"+":""}${cg}%`;ce.className=`cc ${+cg>=0?"u":"d"}`;
+document.getElementById("xCB").style.display=hc?"inline":"none";
+document.getElementById("xTags").innerHTML=tr.map(t=>`<div class="cg ${t.type==='buy'?'b':'s'}"><b>${t.type==='buy'?'매수':'매도'}</b> ${t.rep.split(' ').pop()} ${t.date.slice(5)}${t.conflict?' 💎':''}</div>`).join('')}
+
+function rP(){const pp=document.getElementById("pP"),cs=document.getElementById("cS");
+if(!sP||!D.politician_info[sP]){pp.style.display="none";cs.classList.remove("wp");setTimeout(()=>{if(ch)ch.applyOptions({width:document.getElementById("tv").clientWidth})},30);return}
+pp.style.display="block";cs.classList.add("wp");setTimeout(()=>{if(ch)ch.applyOptions({width:document.getElementById("tv").clientWidth})},30);
+const i=D.politician_info[sP],py=D.trades.find(t=>t.rep===sP)?.party||"D",ini=sP.split(" ").map(n=>n[0]).join(""),pt=D.trades.filter(t=>t.rep===sP);
+document.getElementById("pC").innerHTML=`
+<div class="ph"><div class="pa ${py==='D'?'de':'re'}">${ini}</div><div><div style="font-weight:700;font-size:12px">${sP}</div><div style="font-size:10px;color:var(--dim)"><span style="color:${py==='D'?'var(--dem)':'var(--rep)'};font-weight:700">${py==='D'?'민주당':'공화당'}</span></div></div></div>
+<div class="ps">📌 소속 위원회</div>${(i.committees||[]).map(c=>`<div class="pc">${c}</div>`).join('')}${(i.subcommittees||[]).map(c=>`<div class="psc">↳ ${c}</div>`).join('')}
+<div class="ps">⚖️ 관할 영역</div><div class="ptg">${(i.jurisdiction||[]).map(j=>`<span class="pt">${j}</span>`).join('')}</div>
+<div class="ps">💎 관련 섹터</div><div class="ptg">${(i.sectors||[]).map(s=>`<span class="pdt">💎 ${s}</span>`).join('')}</div>
+${i.note?`<div class="pn"><b>📝 분석 노트</b><p>${i.note}</p></div>`:''}
+<div class="ps">📊 거래 내역</div>${pt.map(t=>`<div class="ptr ${t.ticker===sT?'sl':''}" onclick="sel('${t.ticker}','${t.rep.replace(/'/g,"\\'")}')"><span class="m" style="font-weight:700;color:#A78BFA;width:36px;font-size:10px">${t.ticker}</span><span style="color:var(--dim);flex:1;font-size:9px">${t.date.slice(5)}</span><span style="font-weight:700;color:${t.type==='buy'?'var(--buy)':'var(--sell)'};font-size:9px">${t.type==='buy'?'매수':'매도'}</span>${t.conflict?'<span style="font-size:10px">💎</span>':''}</div>`).join('')}`}
+
+function gF(){return D.trades.filter(t=>{if(pF!=="all"&&t.party!==pF)return false;if(cO&&!t.conflict)return false;return true})}
+
+function rTr(){const tr=gF();let h=`<div class="cd" style="padding:0;overflow:hidden"><div class="tw"><table><thead><tr><th></th><th>날짜</th><th>정치인</th><th>정당</th><th>티커</th><th>종목</th><th>구분</th><th>금액</th><th>섹터</th><th>위원회 관할</th></tr></thead><tbody>`;
+tr.slice(0,100).forEach(t=>{const j=t.conflict?`⚠️ ${D.sector_jurisdiction?.[t.sector]||t.sector}`:'-';
+h+=`<tr class="ck ${t.ticker===sT?'sl':''}" onclick="sel('${t.ticker}','${t.rep.replace(/'/g,"\\'")}')"><td style="width:20px;padding-left:8px">${t.conflict?'<span style="font-size:12px;cursor:help" title="위원회 관할">💎</span>':''}</td><td style="color:var(--dim);font-size:10px;white-space:nowrap">${t.date}</td><td style="font-weight:600;font-size:11px">${t.rep}</td><td><span class="bg ${t.party==='D'?'de':'re'}">${t.party==='D'?'민주':'공화'}</span></td><td class="m" style="font-weight:800;color:#A78BFA;font-size:11px">${t.ticker}</td><td style="color:var(--dim);font-size:10px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.asset}</td><td><span class="bg ${t.type==='buy'?'bu':'se'}">${t.type==='buy'?'매수':'매도'}</span></td><td class="m" style="font-weight:600;font-size:10px;color:${t.type==='buy'?'var(--buy)':'var(--sell)'}">${t.amount||f$(t.amount_mid)}</td><td><span class="bg sc">${t.sector||'-'}</span></td><td style="font-size:9px;color:${t.conflict?'var(--dia)':'var(--dim)'};max-width:140px">${j}</td></tr>`});
+h+=`</tbody></table></div></div>`;if(tr.length>100)h+=`<p style="text-align:center;color:var(--dim);font-size:10px;margin-top:6px">100건 표시 (전체 ${tr.length}건)</p>`;
+document.getElementById("tC").innerHTML=h}
+
+function rPop(){const st=D.stats.popular_stocks,c1='a'+Date.now(),c2='b'+Date.now();
+let h=`<div class="g2"><div class="cd" style="padding:14px"><h3 style="font-size:12px;font-weight:700;margin-bottom:10px">🏆 매수 랭킹</h3><canvas id="${c1}" height="260"></canvas></div><div class="cd" style="padding:14px"><h3 style="font-size:12px;font-weight:700;margin-bottom:10px">💰 거래 금액</h3><canvas id="${c2}" height="260"></canvas></div><div class="gf scs">`;
+st.slice(0,10).forEach(s=>{h+=`<div class="sc ${s.ticker===sT?'sl':''}" onclick="sel('${s.ticker}',null)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px"><span class="m" style="font-weight:800;color:#A78BFA;font-size:12px">${s.ticker}</span>${s.conflicts>0?'<span>💎</span>':''}</div><div style="font-size:10px;color:var(--dim);margin-bottom:3px">${s.asset}</div><div style="font-size:9px;color:var(--dim)">매수 <b style="color:var(--txt)">${s.count}</b>건 · <b style="color:var(--txt)">${s.traders}</b>명</div><div style="margin-top:2px;font-size:11px;font-weight:700;color:var(--buy)">${f$(s.volume)}</div></div>`});
+h+=`</div></div>`;document.getElementById("tC").innerHTML=h;
+setTimeout(()=>{const t=st.slice(0,10);
+new Chart(document.getElementById(c1),{type:'bar',data:{labels:t.map(s=>s.ticker),datasets:[{data:t.map(s=>s.count),backgroundColor:t.map(s=>s.conflicts>0?'#F59E0B':'#7C3AED'),borderRadius:3}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#8B949E',font:{size:9}}},y:{grid:{display:false},ticks:{color:'#A78BFA',font:{size:9,family:'JetBrains Mono',weight:'bold'}}}}}});
+new Chart(document.getElementById(c2),{type:'bar',data:{labels:t.map(s=>s.ticker),datasets:[{data:t.map(s=>s.volume),backgroundColor:'#10B981',borderRadius:3}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>f$(c.parsed.x)}}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#8B949E',font:{size:9},callback:v=>f$(v)}},y:{grid:{display:false},ticks:{color:'#A78BFA',font:{size:9,family:'JetBrains Mono',weight:'bold'}}}}}})},50)}
+
+function rPa(){const ps=D.stats.party_stats,bi='c'+Date.now();
+let h=`<div class="g2">`;[{l:'🔵 민주당',k:'D',c:'var(--dem)'},{l:'🔴 공화당',k:'R',c:'var(--rep)'}].forEach(({l,k,c})=>{const s=ps[k]||{buy:0,sell:0,buy_vol:0,sell_vol:0,conflicts:0};
+h+=`<div class="cd" style="padding:14px"><h3 style="font-size:14px;font-weight:800;color:${c};margin-bottom:10px">${l}</h3><div class="pg"><div class="pst"><div style="font-size:9px;color:var(--dim)">매수</div><div style="font-size:16px;font-weight:800;color:var(--buy)">${s.buy}건</div></div><div class="pst"><div style="font-size:9px;color:var(--dim)">매도</div><div style="font-size:16px;font-weight:800;color:var(--sell)">${s.sell}건</div></div><div class="pst"><div style="font-size:9px;color:var(--dim)">매수 금액</div><div style="font-size:14px;font-weight:800;color:var(--buy)">${f$(s.buy_vol)}</div></div><div class="pst"><div style="font-size:9px;color:var(--dim)">매도 금액</div><div style="font-size:14px;font-weight:800;color:var(--sell)">${f$(s.sell_vol)}</div></div></div><div style="margin-top:7px;background:rgba(245,158,11,0.05);border-radius:6px;padding:7px 9px;display:flex;align-items:center;gap:5px"><span>💎</span><div style="font-size:10px;font-weight:700;color:var(--dia)">이해충돌 ${s.conflicts}건</div></div></div>`});
+h+=`<div class="gf cd" style="padding:14px"><h3 style="font-size:12px;font-weight:700;margin-bottom:10px">📊 정당별 거래 금액</h3><canvas id="${bi}" height="170"></canvas></div></div>`;
+document.getElementById("tC").innerHTML=h;setTimeout(()=>{new Chart(document.getElementById(bi),{type:'bar',data:{labels:['민주당','공화당'],datasets:[{label:'매수',data:[ps.D?.buy_vol||0,ps.R?.buy_vol||0],backgroundColor:'#10B981',borderRadius:5},{label:'매도',data:[ps.D?.sell_vol||0,ps.R?.sell_vol||0],backgroundColor:'#F59E0B',borderRadius:5}]},options:{responsive:true,plugins:{legend:{labels:{color:'#8B949E',font:{size:9}}},tooltip:{callbacks:{label:c=>f$(c.parsed.y)}}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#E6EDF3',font:{size:11,weight:'bold'}}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#8B949E',font:{size:9},callback:v=>f$(v)}}}}})},50)}
+
+function rSe(){const sc=D.stats.sectors,co=['#8B5CF6','#EC4899','#06B6D4','#F97316','#84CC16','#14B8A6','#E879F9','#FBBF24','#6366F1','#FB7185'];
+const pi='d'+Date.now(),bi='e'+Date.now();
+let h=`<div class="g2"><div class="cd" style="padding:14px"><h3 style="font-size:12px;font-weight:700;margin-bottom:10px">🥧 섹터별 비중</h3><canvas id="${pi}" height="220"></canvas></div><div class="cd" style="padding:14px"><h3 style="font-size:12px;font-weight:700;margin-bottom:10px">📊 섹터별 금액</h3><canvas id="${bi}" height="220"></canvas></div><div class="gf ses">`;
+sc.forEach((s,i)=>{h+=`<div class="se" style="border-left-color:${co[i%co.length]}"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px"><span style="font-size:11px;font-weight:700">${s.name}</span>${s.conflicts>0?`<span class="bg cf">💎 ${s.conflicts}</span>`:''}</div><div style="font-size:9px;color:var(--dim)">${s.count}건 · ${f$(s.value)}</div><div style="font-size:8px;color:var(--dim);font-style:italic;margin-top:1px">${D.sector_jurisdiction?.[s.name]||''}</div></div>`});
+h+=`</div></div>`;document.getElementById("tC").innerHTML=h;
+setTimeout(()=>{new Chart(document.getElementById(pi),{type:'doughnut',data:{labels:sc.map(s=>s.name),datasets:[{data:sc.map(s=>s.value),backgroundColor:sc.map((_,i)=>co[i%co.length]),borderWidth:0}]},options:{responsive:true,plugins:{legend:{position:'bottom',labels:{color:'#8B949E',font:{size:8},padding:5}},tooltip:{callbacks:{label:c=>`${c.label}: ${f$(c.parsed)}`}}}}});
+new Chart(document.getElementById(bi),{type:'bar',data:{labels:sc.map(s=>s.name),datasets:[{data:sc.map(s=>s.value),backgroundColor:sc.map((_,i)=>co[i%co.length]),borderRadius:3}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>f$(c.parsed.x)}}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#8B949E',font:{size:9},callback:v=>f$(v)}},y:{grid:{display:false},ticks:{color:'#E6EDF3',font:{size:9}}}}}})},50)}
+
+function rT(){({trades:rTr,popular:rPop,party:rPa,sector:rSe})[tab]?.()}
+function sel(tk,rp){sT=tk;if(rp)sP=rp;uC();rP();rT()}
+
+async function ld(){try{const r=await fetch("data/congress_trades.json");if(!r.ok)throw 0;D=await r.json()}catch(e){D=fb()}init()}
+
+function fb(){const pi={"Nancy Pelosi":{committees:["전 하원의장"],subcommittees:[],jurisdiction:["입법 전반","예산","국방","기술정책"],sectors:["테크","반도체","소프트웨어","방산"],note:"남편 Paul Pelosi 명의 거래. 기술주 매수 타이밍이 정책 발표와 근접해 논란"},"Michael McCaul":{committees:["하원 외교위원회 (위원장)"],subcommittees:[],jurisdiction:["외교정책","대중국 규제","반도체 수출통제"],sectors:["반도체","소프트웨어"],note:"CHIPS Act 반도체 정책 주도 + NVDA, AVGO 대량 매수"},"Dan Crenshaw":{committees:["하원 에너지·상업위원회","하원 정보위원회"],subcommittees:[],jurisdiction:["에너지","통신","사이버보안"],sectors:["소프트웨어","에너지","방산"],note:"정보위 소속으로 방산·사이버 기업 투자"},"Tommy Tuberville":{committees:["상원 군사위원회","상원 농업위원회"],subcommittees:[],jurisdiction:["국방예산","군사계약"],sectors:["방산","반도체"],note:"군사위 소속 + 방산주 대량 매수 → 윤리 조사 대상"},"Mark Green":{committees:["하원 국토안보위원회 (위원장)","하원 군사위원회"],subcommittees:[],jurisdiction:["국토안보","군사계약","방위산업"],sectors:["방산"],note:"국토안보위 위원장 + 방산 기업 매수"},"Josh Gottheimer":{committees:["하원 금융서비스위원회"],subcommittees:[],jurisdiction:["은행규제","핀테크","디지털자산"],sectors:["테크","금융"],note:"빅테크 규제 논의 중 기술주 매수"},"Marjorie Taylor Greene":{committees:["하원 국토안보위원회"],subcommittees:[],jurisdiction:["국토안보","정부 운영"],sectors:["전기차","미디어"],note:"DJT 매수는 정치적 충성도 표현"},"Ro Khanna":{committees:["하원 군사위원회"],subcommittees:[],jurisdiction:["국방기술","실리콘밸리 기술"],sectors:["테크","소프트웨어"],note:"실리콘밸리 지역구, 기술주 활발"},"Daniel Goldman":{committees:["하원 국토안보위원회"],subcommittees:[],jurisdiction:["국토안보","기업규제"],sectors:["테크","금융"],note:"뉴욕 금융가 지역구"},"Debbie Wasserman Schultz":{committees:["하원 세출위원회"],subcommittees:["환경·제조·핵심광물 소위원회"],jurisdiction:["환경정책","핵심광물","광업규제"],sectors:["광업","에너지"],note:"핵심광물 소위 소속 + Hecla Mining(HL) 매수 — 광업 직접 관할"},"Rick Scott":{committees:["상원 상업·과학·교통위원회"],subcommittees:[],jurisdiction:["에너지정책","교통"],sectors:["에너지"],note:"에너지 위원회 소속 + 석유 대기업 투자"},"Lois Frankel":{committees:["하원 세출위원회"],subcommittees:[],jurisdiction:["예산배분","보건예산"],sectors:["헬스케어"],note:"세출위 소속 보건 예산 영향력"}};
+const sj={"반도체":"반도체 수출통제·CHIPS Act","테크":"빅테크 규제·독점금지","소프트웨어":"사이버보안·기술정책","방산":"국방예산·군사계약","전기차":"친환경·EV 보조금","미디어":"통신·미디어 규제","금융":"은행규제·핀테크","에너지":"에너지·화석연료","헬스케어":"보건예산·의약품 규제","광업":"광물 규제·환경정책"};
+const tr=[
+{rep:"Nancy Pelosi",party:"D",ticker:"NVDA",asset:"엔비디아",type:"buy",amount:"$1M-$5M",amount_mid:3e6,date:"2025-01-15",sector:"반도체",conflict:true},
+{rep:"Nancy Pelosi",party:"D",ticker:"AAPL",asset:"애플",type:"buy",amount:"$1M-$5M",amount_mid:3e6,date:"2025-01-22",sector:"테크",conflict:true},
+{rep:"Nancy Pelosi",party:"D",ticker:"MSFT",asset:"마이크로소프트",type:"buy",amount:"$500K-$1M",amount_mid:75e4,date:"2025-02-03",sector:"소프트웨어",conflict:true},
+{rep:"Nancy Pelosi",party:"D",ticker:"GOOGL",asset:"알파벳",type:"sell",amount:"$250K-$500K",amount_mid:375e3,date:"2025-02-10",sector:"테크",conflict:true},
+{rep:"Michael McCaul",party:"R",ticker:"NVDA",asset:"엔비디아",type:"buy",amount:"$500K-$1M",amount_mid:75e4,date:"2025-01-17",sector:"반도체",conflict:true},
+{rep:"Michael McCaul",party:"R",ticker:"AVGO",asset:"브로드컴",type:"buy",amount:"$250K-$500K",amount_mid:375e3,date:"2025-02-06",sector:"반도체",conflict:true},
+{rep:"Michael McCaul",party:"R",ticker:"MSFT",asset:"마이크로소프트",type:"sell",amount:"$100K-$250K",amount_mid:175e3,date:"2025-02-13",sector:"소프트웨어",conflict:true},
+{rep:"Dan Crenshaw",party:"R",ticker:"MSFT",asset:"마이크로소프트",type:"buy",amount:"$500K-$1M",amount_mid:75e4,date:"2025-01-18",sector:"소프트웨어",conflict:true},
+{rep:"Dan Crenshaw",party:"R",ticker:"RTX",asset:"레이시온",type:"buy",amount:"$100K-$250K",amount_mid:175e3,date:"2025-02-05",sector:"방산",conflict:true},
+{rep:"Tommy Tuberville",party:"R",ticker:"PLTR",asset:"팔란티어",type:"buy",amount:"$250K-$500K",amount_mid:375e3,date:"2025-01-20",sector:"소프트웨어",conflict:false},
+{rep:"Tommy Tuberville",party:"R",ticker:"NVDA",asset:"엔비디아",type:"buy",amount:"$100K-$250K",amount_mid:175e3,date:"2025-01-28",sector:"반도체",conflict:true},
+{rep:"Tommy Tuberville",party:"R",ticker:"LMT",asset:"록히드마틴",type:"buy",amount:"$250K-$500K",amount_mid:375e3,date:"2025-02-12",sector:"방산",conflict:true},
+{rep:"Mark Green",party:"R",ticker:"RTX",asset:"레이시온",type:"buy",amount:"$100K-$250K",amount_mid:175e3,date:"2025-01-25",sector:"방산",conflict:true},
+{rep:"Mark Green",party:"R",ticker:"LMT",asset:"록히드마틴",type:"buy",amount:"$50K-$100K",amount_mid:75e3,date:"2025-02-08",sector:"방산",conflict:true},
+{rep:"Mark Green",party:"R",ticker:"GD",asset:"제너럴다이내믹스",type:"buy",amount:"$100K-$250K",amount_mid:175e3,date:"2025-02-15",sector:"방산",conflict:true},
+{rep:"Josh Gottheimer",party:"D",ticker:"GOOGL",asset:"알파벳",type:"buy",amount:"$500K-$1M",amount_mid:75e4,date:"2025-02-01",sector:"테크",conflict:true},
+{rep:"Josh Gottheimer",party:"D",ticker:"META",asset:"메타",type:"buy",amount:"$250K-$500K",amount_mid:375e3,date:"2025-02-09",sector:"테크",conflict:true},
+{rep:"Marjorie Taylor Greene",party:"R",ticker:"TSLA",asset:"테슬라",type:"buy",amount:"$250K-$500K",amount_mid:375e3,date:"2025-02-03",sector:"전기차",conflict:false},
+{rep:"Marjorie Taylor Greene",party:"R",ticker:"DJT",asset:"트럼프미디어",type:"buy",amount:"$15K-$50K",amount_mid:325e2,date:"2025-02-14",sector:"미디어",conflict:false},
+{rep:"Ro Khanna",party:"D",ticker:"AMZN",asset:"아마존",type:"buy",amount:"$100K-$250K",amount_mid:175e3,date:"2025-01-30",sector:"테크",conflict:true},
+{rep:"Ro Khanna",party:"D",ticker:"CRM",asset:"세일즈포스",type:"buy",amount:"$50K-$100K",amount_mid:75e3,date:"2025-02-11",sector:"소프트웨어",conflict:true},
+{rep:"Daniel Goldman",party:"D",ticker:"AAPL",asset:"애플",type:"buy",amount:"$250K-$500K",amount_mid:375e3,date:"2025-01-19",sector:"테크",conflict:true},
+{rep:"Daniel Goldman",party:"D",ticker:"V",asset:"비자",type:"buy",amount:"$100K-$250K",amount_mid:175e3,date:"2025-02-04",sector:"금융",conflict:true},
+{rep:"Debbie Wasserman Schultz",party:"D",ticker:"HL",asset:"헤클라 마이닝",type:"buy",amount:"$15K-$50K",amount_mid:325e2,date:"2024-08-12",sector:"광업",conflict:true},
+{rep:"Rick Scott",party:"R",ticker:"XOM",asset:"엑슨모빌",type:"buy",amount:"$250K-$500K",amount_mid:375e3,date:"2025-01-23",sector:"에너지",conflict:true},
+{rep:"Rick Scott",party:"R",ticker:"CVX",asset:"쉐브론",type:"buy",amount:"$100K-$250K",amount_mid:175e3,date:"2025-02-01",sector:"에너지",conflict:true},
+{rep:"Lois Frankel",party:"D",ticker:"UNH",asset:"유나이티드헬스",type:"sell",amount:"$100K-$250K",amount_mid:175e3,date:"2025-01-27",sector:"헬스케어",conflict:true},
+{rep:"Lois Frankel",party:"D",ticker:"JNJ",asset:"존슨앤존슨",type:"buy",amount:"$50K-$100K",amount_mid:75e3,date:"2025-02-10",sector:"헬스케어",conflict:true},
+].sort((a,b)=>b.date.localeCompare(a.date));
+const tb=tr.filter(t=>t.type==="buy").length,tc=tr.filter(t=>t.conflict).length;
+const sm={},sem={},tm={},ps={D:{buy:0,sell:0,buy_vol:0,sell_vol:0,conflicts:0},R:{buy:0,sell:0,buy_vol:0,sell_vol:0,conflicts:0}};
+tr.forEach(t=>{if(t.type==="buy"){if(!sm[t.ticker])sm[t.ticker]={ticker:t.ticker,asset:t.asset,count:0,volume:0,traders:new Set(),conflicts:0};sm[t.ticker].count++;sm[t.ticker].volume+=t.amount_mid;sm[t.ticker].traders.add(t.rep);if(t.conflict)sm[t.ticker].conflicts++;if(!sem[t.sector])sem[t.sector]={name:t.sector,value:0,count:0,conflicts:0};sem[t.sector].value+=t.amount_mid;sem[t.sector].count++;if(t.conflict)sem[t.sector].conflicts++}if(ps[t.party]){if(t.type==="buy"){ps[t.party].buy++;ps[t.party].buy_vol+=t.amount_mid}else{ps[t.party].sell++;ps[t.party].sell_vol+=t.amount_mid}if(t.conflict)ps[t.party].conflicts++}if(!tm[t.rep])tm[t.rep]={name:t.rep,party:t.party,buys:0,sells:0,volume:0,tickers:new Set(),conflicts:0};if(t.type==="buy")tm[t.rep].buys++;else tm[t.rep].sells++;tm[t.rep].volume+=t.amount_mid;tm[t.rep].tickers.add(t.ticker);if(t.conflict)tm[t.rep].conflicts++});
+return{updated_at:new Date().toISOString().slice(0,10),total_trades:tr.length,total_buy:tb,total_sell:tr.length-tb,total_conflicts:tc,trades:tr,politician_info:pi,sector_jurisdiction:sj,stats:{popular_stocks:Object.values(sm).map(s=>({...s,traders:s.traders.size})).sort((a,b)=>b.count-a.count),sectors:Object.values(sem).sort((a,b)=>b.value-a.value),party_stats:ps,top_traders:Object.values(tm).map(t=>({...t,tickers:t.tickers.size})).sort((a,b)=>b.volume-a.volume)}}}
+
+function init(){
+document.getElementById("sT").textContent=D.total_trades+"건";
+document.getElementById("sBS").textContent=D.total_buy+"/"+D.total_sell;
+document.getElementById("sC").textContent=D.total_conflicts+"건";
+iC();uC();rP();rT();
+document.querySelectorAll('.tb').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tb').forEach(x=>x.classList.remove('ac'));b.classList.add('ac');tab=b.dataset.t;rT()}));
+document.querySelectorAll('.fb[data-p]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.fb[data-p]').forEach(x=>x.classList.remove('ac'));b.classList.add('ac');pF=b.dataset.p;rT()}));
+document.getElementById('cfB').addEventListener('click',function(){cO=!cO;this.classList.toggle('ac',cO);rT()})}
+ld();
+</script>
+</body>
+</html>
