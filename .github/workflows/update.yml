@@ -24,7 +24,7 @@ jobs:
 
       - name: 📊 데이터 수집
         env:
-          FMP_API_KEY: ${{ secrets.FMP_API_KEY }}
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
         run: python fetch_congress_trades.py
 
       - name: 📤 변경사항 커밋 & 푸시
