@@ -23,8 +23,8 @@ FMP_API_KEY = os.environ.get("FMP_API_KEY", "")
 FMP_BASE = "https://financialmodelingprep.com/stable"
 
 # Endpoints
-HOUSE_URL = f"{FMP_BASE}/house-trading?apikey={FMP_API_KEY}"
-SENATE_URL = f"{FMP_BASE}/senate-trading?apikey={FMP_API_KEY}"
+HOUSE_URL = f"{FMP_BASE}/house-trades?apikey={FMP_API_KEY}"
+SENATE_URL = f"{FMP_BASE}/senate-trades?apikey={FMP_API_KEY}"
 
 # ═══════════════════════════════════════════════
 # COMMITTEE / JURISDICTION DATA
