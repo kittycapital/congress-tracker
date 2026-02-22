@@ -178,8 +178,8 @@ tr.ck{cursor:pointer;transition:background .1s}tr.ck:hover{background:rgba(255,2
     <div id="tv"></div>
     <div class="cl">
       <span><span class="ldot" style="background:var(--buy)"></span>매수</span>
-      <span><span class="ldot" style="background:var(--sell)"></span>매도</span>
-      <span><span class="ldot" style="background:var(--cf)"></span>이해충돌</span>
+      <span><span class="ldot" style="background:var(--cf)"></span>매도</span>
+      <span><span class="ldot" style="background:#FF6B6B;border:2px solid var(--cf)"></span>이해충돌</span>
     </div>
     <div class="inline-share" id="inlineShare1"></div>
   </div>
@@ -224,7 +224,8 @@ function makeInlineShare(el){el.innerHTML='<span class="lbl">공유</span><butto
 function makeShareBar(el){el.innerHTML='<div class="share-bar"><div class="share-bar-preview"><b>미국 의회 주식 거래 트래커</b> — herdvibe.com</div><div class="share-bar-buttons"><button class="share-btn share-btn--x" onclick="doShare(\'twitter\',this)">'+xI+'<span class="lbl">트위터</span></button><button class="share-btn share-btn--kakao" onclick="doShare(\'kakao\',this)">'+kI+'<span class="lbl">카카오톡</span></button><button class="share-btn share-btn--tg" onclick="doShare(\'telegram\',this)">'+tI+'<span class="lbl">텔레그램</span></button><button class="share-btn share-btn--ig" onclick="doShare(\'instagram\',this)">'+iI+'<span class="lbl">인스타</span></button><button class="share-btn share-btn--copy" onclick="doShare(\'link\',this)">'+lI+'<span class="lbl">링크 복사</span></button></div></div>';}
 
 /* Price generator */
-function gP(tk){if(PC[tk])return PC[tk];const B={NVDA:118,AAPL:189,MSFT:392,GOOGL:156,PLTR:22,RTX:93,TSLA:248,LMT:442,META:512,AMZN:186,CRM:268,AVGO:156,DJT:36,V:279,JPM:196,BAC:38,UNH:532,JNJ:159,XOM:106,CVX:151,GD:276,HL:5.8};const b=B[tk]||100,v=tk==="DJT"?.06:tk==="PLTR"?.04:.022;const r=[];let p=b;const e=new Date("2025-02-20"),s=new Date("2024-07-01");for(let d=new Date(s);d<=e;d.setDate(d.getDate()+1)){if(d.getDay()===0||d.getDay()===6)continue;p*=1+(Math.random()-.47)*v;r.push({time:d.toISOString().slice(0,10),value:+(p.toFixed(2))})}PC[tk]=r;return r}
+function gP(tk){if(PC[tk])return PC[tk];const B={NVDA:118,AAPL:189,MSFT:392,GOOGL:156,PLTR:22,RTX:93,TSLA:248,LMT:442,META:512,AMZN:186,CRM:268,AVGO:156,DJT:36,V:279,JPM:196,BAC:38,UNH:532,JNJ:159,XOM:106,CVX:151,GD:276,HL:5.8,NEM:42,COP:108,NOC:490,HII:195,LHX:210,NFLX:680,MU:88,QCOM:165,INTC:28,MRVL:72,BA:178,PFE:29,MRK:118,LLY:750,ABBV:175,FCX:42,DIS:95,NOW:720,ORCL:140,SNOW:165};const b=B[tk]||100,v=tk==="DJT"?.06:tk==="PLTR"?.04:.022;const r=[];let p=b;const e=new Date(),s=new Date();s.setMonth(s.getMonth()-14);for(let d=new Date(s);d<=e;d.setDate(d.getDate()+1)){if(d.getDay()===0||d.getDay()===6)continue;p*=1+(Math.random()-.47)*v;r.push({time:d.toISOString().slice(0,10),value:+(p.toFixed(2))})}PC[tk]=r;return r}
+function findNearestDate(pr,dateStr){if(!pr.length)return null;let best=null,bestDiff=Infinity;for(let i=0;i<pr.length;i++){const diff=Math.abs(new Date(pr[i].time)-new Date(dateStr));if(diff<bestDiff){bestDiff=diff;best=pr[i];}}return bestDiff<=5*86400000?best:null;}
 const f$=v=>v>=1e6?`$${(v/1e6).toFixed(1)}M`:v>=1e3?`$${(v/1e3).toFixed(0)}K`:`$${v}`;
 
 /* LightweightCharts with watermark */
@@ -240,7 +241,7 @@ new ResizeObserver(()=>{if(ch)ch.applyOptions({width:el.clientWidth})}).observe(
 
 function uC(){if(!ch||!as)return;const pr=gP(sT);as.setData(pr);
 const tr=D.trades.filter(t=>t.ticker===sT),mk=[];
-tr.forEach(t=>{const pt=pr.find(p=>p.time===t.date);if(!pt)return;const ib=t.type==="buy";mk.push({time:t.date,position:ib?"belowBar":"aboveBar",color:t.conflict?"#EF4444":ib?"#10B981":"#F59E0B",shape:ib?"arrowUp":"arrowDown",text:t.rep.split(" ").pop()+(ib?" 매수":" 매도")})});
+tr.forEach(t=>{const pt=pr.find(p=>p.time===t.date)||findNearestDate(pr,t.date);if(!pt)return;const ib=t.type==="buy";mk.push({time:pt.time,position:ib?"belowBar":"aboveBar",color:t.conflict?"#EF4444":ib?"#10B981":"#EF4444",shape:ib?"arrowUp":"arrowDown",text:t.rep.split(" ").pop()+(ib?" 매수":" 매도")})});
 mk.sort((a,b)=>a.time.localeCompare(b.time));as.setMarkers(mk);ch.timeScale().fitContent();
 const a=tr[0]?.asset||sT,lp=pr[pr.length-1]?.value||0,fp=pr[0]?.value||1,cg=((lp-fp)/fp*100).toFixed(1),hc=tr.some(t=>t.conflict);
 document.getElementById("xT").textContent=sT;document.getElementById("xA").textContent=a;
