@@ -242,7 +242,7 @@ new ResizeObserver(()=>{if(ch)ch.applyOptions({width:el.clientWidth})}).observe(
 
 function uC(){if(!ch||!as)return;const pr=gP(sT);as.setData(pr);
 const tr=D.trades.filter(t=>t.ticker===sT),mk=[];
-tr.forEach(t=>{const pt=pr.find(p=>p.time===t.date)||findNearestDate(pr,t.date);if(!pt)return;const ib=t.type==="buy";mk.push({time:pt.time,position:ib?"belowBar":"aboveBar",color:t.conflict?"#EF4444":ib?"#10B981":"#EF4444",shape:ib?"arrowUp":"arrowDown",text:t.rep.split(" ").pop()+(ib?" 매수":" 매도")})});
+tr.forEach(t=>{const pt=pr.find(p=>p.time===t.date)||findNearestDate(pr,t.date);if(!pt)return;const ib=t.type==="buy";mk.push({time:pt.time,position:ib?"belowBar":"aboveBar",color:ib?"#10B981":"#EF4444",shape:ib?"arrowUp":"arrowDown",text:t.rep.split(" ").pop()+(ib?" 매수":" 매도")+(t.conflict?" [충돌]":"")})});
 mk.sort((a,b)=>a.time.localeCompare(b.time));as.setMarkers(mk);ch.timeScale().fitContent();
 const a=tr[0]?.asset||sT,lp=pr[pr.length-1]?.value||0,fp=pr[0]?.value||1,cg=((lp-fp)/fp*100).toFixed(1),hc=tr.some(t=>t.conflict);
 document.getElementById("xT").textContent=sT;document.getElementById("xA").textContent=a;
